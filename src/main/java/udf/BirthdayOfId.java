@@ -3,7 +3,7 @@ package udf;
 import org.apache.hadoop.hive.ql.exec.UDF;
 import util.IdNoUtil;
 
-public class BirthDayFromIdNo extends UDF
+public class BirthdayOfId extends UDF
 {
   public String evaluate(String idNo)
   {

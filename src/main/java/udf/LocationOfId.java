@@ -3,11 +3,10 @@ package udf;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-import java.io.PrintStream;
 import java.util.HashMap;
 import org.apache.hadoop.hive.ql.exec.UDF;
 
-public class JiGuanFromIdNo extends UDF
+public class LocationOfId extends UDF
 {
   public static HashMap<String, String> jgMap = new HashMap();
 
@@ -32,7 +31,7 @@ public class JiGuanFromIdNo extends UDF
 
   static
   {
-    String path = "NIandLocal.txt";
+    String path = "NILocation.txt";
     File f = new File(path);
     BufferedReader reader = null;
     FileReader fr = null;

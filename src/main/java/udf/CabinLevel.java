@@ -6,7 +6,7 @@ import java.io.FileReader;
 import java.util.HashMap;
 import org.apache.hadoop.hive.ql.exec.UDF;
 
-public class CabinTrans extends UDF
+public class CabinLevel extends UDF
 {
   public static HashMap<String, String> airCompany = new HashMap();
   public static HashMap<String, HashMap<String, String>> cabinMap = new HashMap();
@@ -44,8 +44,8 @@ public class CabinTrans extends UDF
 
   static
   {
-    String cabinPath = "cabin_all";
-    String airComPath = "air_company_new";
+    String cabinPath = "cabinInfos.txt";
+    String airComPath = "airCompany.txt";
     try
     {
       File f = new File(cabinPath);

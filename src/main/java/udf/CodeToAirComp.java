@@ -6,7 +6,7 @@ import java.io.FileReader;
 import java.util.HashMap;
 import org.apache.hadoop.hive.ql.exec.UDF;
 
-public class AirCompTrans extends UDF
+public class CodeToAirComp extends UDF
 {
   public static HashMap<String, String> airCompany = new HashMap();
   public static HashMap<String, String> airCompanyReverse = new HashMap();
@@ -43,7 +43,7 @@ public class AirCompTrans extends UDF
 
   static
   {
-    String airComPath = "air_company_new";
+    String airComPath = "airCompany.txt";
     try
     {
       File af = new File(airComPath);

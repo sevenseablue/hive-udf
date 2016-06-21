@@ -46,7 +46,7 @@ public class IPCityUtil {
         BufferedReader in = null;
         try
         {
-            in = new BufferedReader(new InputStreamReader(IPCityUtil.class.getClassLoader().getResourceAsStream("ip_departure.txt")));
+            in = new BufferedReader(new InputStreamReader(IPCityUtil.class.getClassLoader().getResourceAsStream("ipCityInfos.txt")));
             String line;
             while ((line = in.readLine()) != null) {
                 String[] ipDep = line.split(",");
@@ -72,7 +72,7 @@ public class IPCityUtil {
         try {
             return ipRangeDepMap.get(IPV4Util.singleIpToRange(ip));
         } catch (UnknownHostException e) {
-            return "/";
+            return "\001\001";
         }
     }
 

@@ -3,15 +3,15 @@ package udf;
 import org.apache.hadoop.hive.ql.exec.UDF;
 import util.IdNoUtil;
 
-public class StarSignFromIdNo extends UDF
+public class AgeOfId extends UDF
 {
-  public String evaluate(String idNo)
+  public int evaluate(String idNo)
   {
-    String res = "";
+    int res = 0;
     if (IdNoUtil.ifIdNoOk(idNo)) {
       String birthDay = IdNoUtil.getBirthFromIdNo(idNo);
       if (IdNoUtil.ifBirthDayOk(birthDay)) {
-        res = IdNoUtil.getStarSign(birthDay);
+        res = IdNoUtil.getAge(birthDay);
       }
     }
     return res;
