@@ -6,8 +6,8 @@ import util.IPCityUtil;
 
 public class IPCityInfos extends UDF {
 
-	@Description(" return the city of the ip ")
-    public String evaluate(final String ip){
+    @Description(" return the city of the ip ")
+    public String evaluate(final String ip) {
         return IPCityUtil.getInfos(ip);
     }
 }

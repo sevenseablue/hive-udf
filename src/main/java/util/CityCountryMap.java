@@ -1,12 +1,9 @@
 package util;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.HashMap;
 
-public class MapMy3 {
+public class CityCountryMap {
     /**
      *
      */
@@ -16,7 +13,7 @@ public class MapMy3 {
     static {
         BufferedReader br;
         try {
-            br = new BufferedReader(new FileReader("dictionary3.txt"));
+            br = new BufferedReader(new InputStreamReader(CityCountryMap.class.getClassLoader().getResourceAsStream("cityCountry.txt")));
             String line = "";
             while ((line = br.readLine()) != null) {
                 String[] spli = line.split("\001");

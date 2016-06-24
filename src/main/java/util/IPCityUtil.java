@@ -17,16 +17,15 @@ import java.util.TreeMap;
 public class IPCityUtil {
     private static Map<Range<Integer>, String> ipRangeDepMap;
 
-    static
-    {
+    static {
         ipRangeDepMap = new TreeMap<Range<Integer>, String>(new Comparator<Range<Integer>>() {
             public int compare(Range<Integer> r1, Range<Integer> r2) {
                 if ((r1 == null) || (r2 == null)) {
                     throw new NullPointerException();
                 }
                 if ((r1.containsRange(r2)) || (r2.containsRange(r1)) || (r1.equals(r2))) {
-                    System.out.println(IPV4Util.intToIp(r1.getMinimum())+ IPV4Util.intToIp(r1.getMaximum()));
-                    System.out.println(IPV4Util.intToIp(r2.getMinimum())+ IPV4Util.intToIp(r2.getMaximum()));
+                    System.out.println(IPV4Util.intToIp(r1.getMinimum()) + IPV4Util.intToIp(r1.getMaximum()));
+                    System.out.println(IPV4Util.intToIp(r2.getMinimum()) + IPV4Util.intToIp(r2.getMaximum()));
                     return 0;
                 }
 
@@ -41,11 +40,9 @@ public class IPCityUtil {
     }
 
 
-    private static void initMap()
-    {
+    private static void initMap() {
         BufferedReader in = null;
-        try
-        {
+        try {
             in = new BufferedReader(new InputStreamReader(IPCityUtil.class.getClassLoader().getResourceAsStream("ipCityInfos.txt")));
             String line;
             while ((line = in.readLine()) != null) {
@@ -61,14 +58,13 @@ public class IPCityUtil {
             try {
                 if (null != in)
                     in.close();
-            }
-            catch (IOException e) {
+            } catch (IOException e) {
                 e.printStackTrace();
             }
         }
     }
 
-    public static String getInfos(String ip){
+    public static String getInfos(String ip) {
         try {
             return ipRangeDepMap.get(IPV4Util.singleIpToRange(ip));
         } catch (UnknownHostException e) {

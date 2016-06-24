@@ -6,8 +6,8 @@ import util.MapMy1;
 
 public class Map1Get extends UDF {
 
-	@Description(" return fileSet.contains(String... s1) ")
-    public String evaluate(final String s, final String defaultString){
+    @Description(" return fileSet.contains(String... s1) ")
+    public String evaluate(final String s, final String defaultString) {
         return MapMy1.get(s, defaultString);
     }
 }
