@@ -87,7 +87,7 @@ public class FlightLog {
                 .append(ma).append(delim1)
                 .append(osVersion).append(delim1)
                 .append(FlightInfo.listToHive(fInfos));
-
+        
         return sb.toString();
     }
 
