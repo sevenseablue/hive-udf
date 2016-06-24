@@ -24,8 +24,6 @@ public class IPCityUtil {
                     throw new NullPointerException();
                 }
                 if ((r1.containsRange(r2)) || (r2.containsRange(r1)) || (r1.equals(r2))) {
-                    System.out.println(IPV4Util.intToIp(r1.getMinimum()) + IPV4Util.intToIp(r1.getMaximum()));
-                    System.out.println(IPV4Util.intToIp(r2.getMinimum()) + IPV4Util.intToIp(r2.getMaximum()));
                     return 0;
                 }
 

@@ -171,18 +171,18 @@ public class FlightInfo {
         StringBuilder sb  = new StringBuilder();
 
         for(FlightInfo flightInfo: list1){
-            sb.append(flightInfo.depCity).append(delim3)
-                    .append(flightInfo.arrCity).append(delim3)
-                    .append(flightInfo.depCode).append(delim3)
-                    .append(flightInfo.arrCode).append(delim3)
-                    .append(flightInfo.depDate).append(delim3)
-                    .append(flightInfo.arrDate).append(delim3)
-                    .append(flightInfo.depTime).append(delim3)
-                    .append(flightInfo.arrTime).append(delim3)
-                    .append(flightInfo.companyCode).append(delim3)
-                    .append(flightInfo.flightNo).append(delim3)
-                    .append(flightInfo.cabin).append(delim3)
-                    .append(flightInfo.cabinDesc).append(delim2);
+            sb.append(StringUtil.nullToEmpty(flightInfo.depCity)).append(delim3)
+                    .append(StringUtil.nullToEmpty(flightInfo.arrCity)).append(delim3)
+                    .append(StringUtil.nullToEmpty(flightInfo.depCode)).append(delim3)
+                    .append(StringUtil.nullToEmpty(flightInfo.arrCode)).append(delim3)
+                    .append(StringUtil.nullToEmpty(flightInfo.depDate)).append(delim3)
+                    .append(StringUtil.nullToEmpty(flightInfo.arrDate)).append(delim3)
+                    .append(StringUtil.nullToEmpty(flightInfo.depTime)).append(delim3)
+                    .append(StringUtil.nullToEmpty(flightInfo.arrTime)).append(delim3)
+                    .append(StringUtil.nullToEmpty(flightInfo.companyCode)).append(delim3)
+                    .append(StringUtil.nullToEmpty(flightInfo.flightNo)).append(delim3)
+                    .append(StringUtil.nullToEmpty(flightInfo.cabin)).append(delim3)
+                    .append(StringUtil.nullToEmpty(flightInfo.cabinDesc)).append(delim2);
         }
         if(sb.length()>0){
             sb.deleteCharAt(sb.length()-1);
@@ -204,21 +204,21 @@ public class FlightInfo {
                 break;
             case QUERYFMIXWAYLIST:
                 flightInfo = new FlightInfo();
-                flightInfo.setDepCity(MapUtils.GetOrDef(map1, "begin", ""));
-                flightInfo.setArrCity(MapUtils.GetOrDef(map1, "end", ""));
-                flightInfo.setDepDate(MapUtils.GetOrDef(map1, "date", ""));
+                flightInfo.setDepCity(MapUtils.getOrDef(map1, "begin", ""));
+                flightInfo.setArrCity(MapUtils.getOrDef(map1, "end", ""));
+                flightInfo.setDepDate(MapUtils.getOrDef(map1, "date", ""));
                 fInfos.add(flightInfo);
                 break;
             case QUERYFROUNDWAYLIST:
                 flightInfo = new FlightInfo();
-                flightInfo.setDepCity(MapUtils.GetOrDef(map1, "begin", ""));
-                flightInfo.setArrCity(MapUtils.GetOrDef(map1, "end", ""));
-                flightInfo.setDepDate(MapUtils.GetOrDef(map1, "goDate", ""));
+                flightInfo.setDepCity(MapUtils.getOrDef(map1, "begin", ""));
+                flightInfo.setArrCity(MapUtils.getOrDef(map1, "end", ""));
+                flightInfo.setDepDate(MapUtils.getOrDef(map1, "goDate", ""));
                 fInfos.add(flightInfo);
                 flightInfo = new FlightInfo();
-                flightInfo.setDepCity(MapUtils.GetOrDef(map1, "end", ""));
-                flightInfo.setArrCity(MapUtils.GetOrDef(map1, "begin", ""));
-                flightInfo.setDepDate(MapUtils.GetOrDef(map1, "backDate", ""));
+                flightInfo.setDepCity(MapUtils.getOrDef(map1, "end", ""));
+                flightInfo.setArrCity(MapUtils.getOrDef(map1, "begin", ""));
+                flightInfo.setDepDate(MapUtils.getOrDef(map1, "backDate", ""));
                 fInfos.add(flightInfo);
                 break;
             case QUERYOTALIST:
@@ -226,35 +226,35 @@ public class FlightInfo {
                 for (String string : list_101) {
                     Map<String, String> map_tmp = WapLogUtils.splitToMap(string);
                     flightInfo = new FlightInfo();
-                    flightInfo.setDepCity(MapUtils.GetOrDef(map_tmp, "depCity", ""));
-                    flightInfo.setArrCity(MapUtils.GetOrDef(map_tmp, "arrCity", ""));
-                    flightInfo.setDepCode(MapUtils.GetOrDef(map_tmp, "depCode", ""));
-                    flightInfo.setArrCode(MapUtils.GetOrDef(map_tmp, "arrCode", ""));
-                    flightInfo.setDepDate(MapUtils.GetOrDef(map_tmp, "depDate", ""));
-                    flightInfo.setArrDate(MapUtils.GetOrDef(map_tmp, "arrDate", ""));
-                    flightInfo.setDepTime(MapUtils.GetOrDef(map_tmp, "depTime", ""));
-                    flightInfo.setArrTime(MapUtils.GetOrDef(map_tmp, "arrTime", ""));
-                    flightInfo.setFlightNo(MapUtils.GetOrDef(map_tmp, "flightNo", ""));
-                    flightInfo.setCompanyCode(MapUtils.GetOrDef(map_tmp, "airlineCode", ""));
-                    flightInfo.setPlaneType(MapUtils.GetOrDef(map_tmp, "planeType", ""));
+                    flightInfo.setDepCity(MapUtils.getOrDef(map_tmp, "depCity", ""));
+                    flightInfo.setArrCity(MapUtils.getOrDef(map_tmp, "arrCity", ""));
+                    flightInfo.setDepCode(MapUtils.getOrDef(map_tmp, "depCode", ""));
+                    flightInfo.setArrCode(MapUtils.getOrDef(map_tmp, "arrCode", ""));
+                    flightInfo.setDepDate(MapUtils.getOrDef(map_tmp, "depDate", ""));
+                    flightInfo.setArrDate(MapUtils.getOrDef(map_tmp, "arrDate", ""));
+                    flightInfo.setDepTime(MapUtils.getOrDef(map_tmp, "depTime", ""));
+                    flightInfo.setArrTime(MapUtils.getOrDef(map_tmp, "arrTime", ""));
+                    flightInfo.setFlightNo(MapUtils.getOrDef(map_tmp, "flightNo", ""));
+                    flightInfo.setCompanyCode(MapUtils.getOrDef(map_tmp, "airlineCode", ""));
+                    flightInfo.setPlaneType(MapUtils.getOrDef(map_tmp, "planeType", ""));
                     fInfos.add(flightInfo);
                 }
                 break;
             case SRVTTSAV:
                 flightInfo = new FlightInfo();
-                flightInfo.setDepCity(MapUtils.GetOrDef(map1, "deptCity", ""));
-                flightInfo.setArrCity(MapUtils.GetOrDef(map1, "arriCity", ""));
-                flightInfo.setDepCode(MapUtils.GetOrDef(map1, "depcode", ""));
-                flightInfo.setArrCode(MapUtils.GetOrDef(map1, "arrcode", ""));
-                flightInfo.setDepDate(MapUtils.GetOrDef(map1, "deptDate", ""));
-                flightInfo.setArrDate(MapUtils.GetOrDef(map1, "arriDate", ""));
-                flightInfo.setDepTime(MapUtils.GetOrDef(map1, "depTime", ""));
-                flightInfo.setArrTime(MapUtils.GetOrDef(map1, "arrTime", ""));
-                flightInfo.setFlightNo(MapUtils.GetOrDef(map1, "airline", ""));
-                flightInfo.setCompanyCode(MapUtils.GetOrDef(map1, "fcode", ""));
-                flightInfo.setCabin(MapUtils.GetOrDef(map1, "cabin", ""));
-                flightInfo.setCabinDesc(MapUtils.GetOrDef(map1, "cabin_desc", ""));
-                flightInfo.setPlaneType(MapUtils.GetOrDef(map1, "planetype", ""));
+                flightInfo.setDepCity(MapUtils.getOrDef(map1, "deptCity", ""));
+                flightInfo.setArrCity(MapUtils.getOrDef(map1, "arriCity", ""));
+                flightInfo.setDepCode(MapUtils.getOrDef(map1, "depcode", ""));
+                flightInfo.setArrCode(MapUtils.getOrDef(map1, "arrcode", ""));
+                flightInfo.setDepDate(MapUtils.getOrDef(map1, "deptDate", ""));
+                flightInfo.setArrDate(MapUtils.getOrDef(map1, "arriDate", ""));
+                flightInfo.setDepTime(MapUtils.getOrDef(map1, "depTime", ""));
+                flightInfo.setArrTime(MapUtils.getOrDef(map1, "arrTime", ""));
+                flightInfo.setFlightNo(MapUtils.getOrDef(map1, "airline", ""));
+                flightInfo.setCompanyCode(MapUtils.getOrDef(map1, "fcode", ""));
+                flightInfo.setCabin(MapUtils.getOrDef(map1, "cabin", ""));
+                flightInfo.setCabinDesc(MapUtils.getOrDef(map1, "cabin_desc", ""));
+                flightInfo.setPlaneType(MapUtils.getOrDef(map1, "planetype", ""));
                 fInfos.add(flightInfo);
                 break;
             case INTERTTSAVNEW:
@@ -265,22 +265,22 @@ public class FlightInfo {
                 for (String string : list_101) {
                     Map<String, String> map_tmp = WapLogUtils.splitToMap(string);
                     flightInfo = new FlightInfo();
-                    flightInfo.setDepCity(MapUtils.GetOrDef(map_tmp, "depCity", ""));
-                    flightInfo.setArrCity(MapUtils.GetOrDef(map_tmp, "arrCity", ""));
-                    flightInfo.setDepCode(MapUtils.GetOrDef(map_tmp, "depCode", ""));
-                    flightInfo.setArrCode(MapUtils.GetOrDef(map_tmp, "arrCode", ""));
-                    flightInfo.setDepDate(MapUtils.GetOrDef(map_tmp, "depDate", ""));
-                    flightInfo.setArrDate(MapUtils.GetOrDef(map_tmp, "arrDate", ""));
-                    flightInfo.setDepTime(MapUtils.GetOrDef(map_tmp, "depTime", ""));
-                    flightInfo.setArrTime(MapUtils.GetOrDef(map_tmp, "arrTime", ""));
-                    flightInfo.setFlightNo(MapUtils.GetOrDef(map_tmp, "flightNo", ""));
-                    String cabin_tmp = MapUtils.GetOrDef(map_tmp, "cabin", "");
+                    flightInfo.setDepCity(MapUtils.getOrDef(map_tmp, "depCity", ""));
+                    flightInfo.setArrCity(MapUtils.getOrDef(map_tmp, "arrCity", ""));
+                    flightInfo.setDepCode(MapUtils.getOrDef(map_tmp, "depCode", ""));
+                    flightInfo.setArrCode(MapUtils.getOrDef(map_tmp, "arrCode", ""));
+                    flightInfo.setDepDate(MapUtils.getOrDef(map_tmp, "depDate", ""));
+                    flightInfo.setArrDate(MapUtils.getOrDef(map_tmp, "arrDate", ""));
+                    flightInfo.setDepTime(MapUtils.getOrDef(map_tmp, "depTime", ""));
+                    flightInfo.setArrTime(MapUtils.getOrDef(map_tmp, "arrTime", ""));
+                    flightInfo.setFlightNo(MapUtils.getOrDef(map_tmp, "flightNo", ""));
+                    String cabin_tmp = MapUtils.getOrDef(map_tmp, "cabin", "");
                     if (cabin_tmp.equals("")) {
                         cabin_tmp = cabin;
                     }
                     flightInfo.setCabin(cabin_tmp);
-                    flightInfo.setCabinDesc(MapUtils.GetOrDef(map_tmp, "cabinDesc", ""));
-                    flightInfo.setPlaneType(MapUtils.GetOrDef(map1, "planeType", ""));
+                    flightInfo.setCabinDesc(MapUtils.getOrDef(map_tmp, "cabinDesc", ""));
+                    flightInfo.setPlaneType(MapUtils.getOrDef(map1, "planeType", ""));
                     fInfos.add(flightInfo);
                 }
                 break;
@@ -289,80 +289,80 @@ public class FlightInfo {
                 for (String string : list_101) {
                     Map<String, String> map_tmp = WapLogUtils.splitToMap(string);
                     flightInfo = new FlightInfo();
-                    flightInfo.setDepCity(MapUtils.GetOrDef(map_tmp, "depCity", ""));
-                    flightInfo.setArrCity(MapUtils.GetOrDef(map_tmp, "arrCity", ""));
-                    flightInfo.setDepCode(MapUtils.GetOrDef(map_tmp, "depCode", ""));
-                    flightInfo.setArrCode(MapUtils.GetOrDef(map_tmp, "arrCode", ""));
-                    flightInfo.setDepDate(MapUtils.GetOrDef(map_tmp, "depDate", ""));
-                    flightInfo.setArrDate(MapUtils.GetOrDef(map_tmp, "arrDate", ""));
-                    flightInfo.setDepTime(MapUtils.GetOrDef(map_tmp, "depTime", ""));
-                    flightInfo.setArrTime(MapUtils.GetOrDef(map_tmp, "arrTime", ""));
-                    flightInfo.setFlightNo(MapUtils.GetOrDef(map_tmp, "flightNo", ""));
-                    flightInfo.setCompanyCode(MapUtils.GetOrDef(map_tmp, "fcode", ""));
-                    flightInfo.setCabin(MapUtils.GetOrDef(map_tmp, "cabin", ""));
-                    flightInfo.setCabinDesc(MapUtils.GetOrDef(map_tmp, "cabinDesc", ""));
-                    flightInfo.setPlaneType(MapUtils.GetOrDef(map_tmp, "planeType", ""));
+                    flightInfo.setDepCity(MapUtils.getOrDef(map_tmp, "depCity", ""));
+                    flightInfo.setArrCity(MapUtils.getOrDef(map_tmp, "arrCity", ""));
+                    flightInfo.setDepCode(MapUtils.getOrDef(map_tmp, "depCode", ""));
+                    flightInfo.setArrCode(MapUtils.getOrDef(map_tmp, "arrCode", ""));
+                    flightInfo.setDepDate(MapUtils.getOrDef(map_tmp, "depDate", ""));
+                    flightInfo.setArrDate(MapUtils.getOrDef(map_tmp, "arrDate", ""));
+                    flightInfo.setDepTime(MapUtils.getOrDef(map_tmp, "depTime", ""));
+                    flightInfo.setArrTime(MapUtils.getOrDef(map_tmp, "arrTime", ""));
+                    flightInfo.setFlightNo(MapUtils.getOrDef(map_tmp, "flightNo", ""));
+                    flightInfo.setCompanyCode(MapUtils.getOrDef(map_tmp, "fcode", ""));
+                    flightInfo.setCabin(MapUtils.getOrDef(map_tmp, "cabin", ""));
+                    flightInfo.setCabinDesc(MapUtils.getOrDef(map_tmp, "cabinDesc", ""));
+                    flightInfo.setPlaneType(MapUtils.getOrDef(map_tmp, "planeType", ""));
                     fInfos.add(flightInfo);
                 }
                 break;
             case SRVTTSAV4PACKAGE:
                 flightInfo = new FlightInfo();
-                flightInfo.setDepCity(MapUtils.GetOrDef(map1, "deptCity", ""));
-                flightInfo.setArrCity(MapUtils.GetOrDef(map1, "arriCity", ""));
-                flightInfo.setDepCode(MapUtils.GetOrDef(map1, "depcode", ""));
-                flightInfo.setArrCode(MapUtils.GetOrDef(map1, "arrcode", ""));
-                flightInfo.setDepDate(MapUtils.GetOrDef(map1, "date", ""));
-                flightInfo.setArrDate(MapUtils.GetOrDef(map1, "arriDate", ""));
-                flightInfo.setDepTime(MapUtils.GetOrDef(map1, "deptTime", ""));
-                flightInfo.setArrTime(MapUtils.GetOrDef(map1, "arriTime", ""));
-                flightInfo.setFlightNo(MapUtils.GetOrDef(map1, "airline", ""));
-                cabin = MapUtils.GetOrDef(map1, "ccabin", "");
+                flightInfo.setDepCity(MapUtils.getOrDef(map1, "deptCity", ""));
+                flightInfo.setArrCity(MapUtils.getOrDef(map1, "arriCity", ""));
+                flightInfo.setDepCode(MapUtils.getOrDef(map1, "depcode", ""));
+                flightInfo.setArrCode(MapUtils.getOrDef(map1, "arrcode", ""));
+                flightInfo.setDepDate(MapUtils.getOrDef(map1, "date", ""));
+                flightInfo.setArrDate(MapUtils.getOrDef(map1, "arriDate", ""));
+                flightInfo.setDepTime(MapUtils.getOrDef(map1, "deptTime", ""));
+                flightInfo.setArrTime(MapUtils.getOrDef(map1, "arriTime", ""));
+                flightInfo.setFlightNo(MapUtils.getOrDef(map1, "airline", ""));
+                cabin = MapUtils.getOrDef(map1, "ccabin", "");
                 cabin = StringUtil.sub(cabin, 0, '|', false);
                 flightInfo.setCabin(cabin);
-                flightInfo.setCabinDesc(MapUtils.GetOrDef(map1, "cabin_desc", ""));
+                flightInfo.setCabinDesc(MapUtils.getOrDef(map1, "cabin_desc", ""));
                 fInfos.add(flightInfo);
                 flightInfo = new FlightInfo();
-                flightInfo.setDepCity(MapUtils.GetOrDef(map1, "backDeptCity", ""));
-                flightInfo.setArrCity(MapUtils.GetOrDef(map1, "backArriCity", ""));
-                flightInfo.setDepCode(MapUtils.GetOrDef(map1, "backdepcode", ""));
-                flightInfo.setArrCode(MapUtils.GetOrDef(map1, "backArrcode", ""));
-                flightInfo.setDepDate(MapUtils.GetOrDef(map1, "backDate", ""));
-                flightInfo.setArrDate(MapUtils.GetOrDef(map1, "backArriDate", ""));
-                flightInfo.setDepTime(MapUtils.GetOrDef(map1, "backDeptTime", ""));
-                flightInfo.setArrTime(MapUtils.GetOrDef(map1, "backArriTime", ""));
-                flightInfo.setFlightNo(MapUtils.GetOrDef(map1, "backAirline", ""));
-                cabin = MapUtils.GetOrDef(map1, "bcabin", "");
+                flightInfo.setDepCity(MapUtils.getOrDef(map1, "backDeptCity", ""));
+                flightInfo.setArrCity(MapUtils.getOrDef(map1, "backArriCity", ""));
+                flightInfo.setDepCode(MapUtils.getOrDef(map1, "backdepcode", ""));
+                flightInfo.setArrCode(MapUtils.getOrDef(map1, "backArrcode", ""));
+                flightInfo.setDepDate(MapUtils.getOrDef(map1, "backDate", ""));
+                flightInfo.setArrDate(MapUtils.getOrDef(map1, "backArriDate", ""));
+                flightInfo.setDepTime(MapUtils.getOrDef(map1, "backDeptTime", ""));
+                flightInfo.setArrTime(MapUtils.getOrDef(map1, "backArriTime", ""));
+                flightInfo.setFlightNo(MapUtils.getOrDef(map1, "backAirline", ""));
+                cabin = MapUtils.getOrDef(map1, "bcabin", "");
                 cabin = StringUtil.sub(cabin, 0, '|', false);
 //                if(!cabin.equals("")){
 //                    cabin = cabin.substring(0, cabin.indexOf("|"));
 //                }
                 cabin = StringUtil.sub(cabin, 0, '|', false);
                 flightInfo.setCabin(cabin);
-                flightInfo.setCabinDesc(MapUtils.GetOrDef(map1, "backCabin_desc", ""));
+                flightInfo.setCabinDesc(MapUtils.getOrDef(map1, "backCabin_desc", ""));
                 fInfos.add(flightInfo);
                 break;
 
             case FLIGHTBARGAININDEX:
                 flightInfo = new FlightInfo();
-                flightInfo.setDepCity(MapUtils.GetOrDef(map1, "depCity", ""));
-                flightInfo.setArrCity(MapUtils.GetOrDef(map1, "arrCity", ""));
+                flightInfo.setDepCity(MapUtils.getOrDef(map1, "depCity", ""));
+                flightInfo.setArrCity(MapUtils.getOrDef(map1, "arrCity", ""));
                 fInfos.add(flightInfo);
                 break;
             case QUERYFLIGHTLOWPRICE:
                 flightInfo = new FlightInfo();
-                flightInfo.setDepCity(MapUtils.GetOrDef(map1, "c", ""));
-                flightInfo.setArrCity(MapUtils.GetOrDef(map1, "arrCity", ""));
+                flightInfo.setDepCity(MapUtils.getOrDef(map1, "c", ""));
+                flightInfo.setArrCity(MapUtils.getOrDef(map1, "arrCity", ""));
                 fInfos.add(flightInfo);
                 break;
             case QUERYINTERFLIGHTLOWPRICE:
                 flightInfo = new FlightInfo();
-                flightInfo.setDepCity(MapUtils.GetOrDef(map1, "depCity", ""));
+                flightInfo.setDepCity(MapUtils.getOrDef(map1, "depCity", ""));
                 fInfos.add(flightInfo);
                 break;
             case QUERYFMULTIWAYLIST:
-                String begin = MapUtils.GetOrDef(map1, "begin", "");
-                String end = MapUtils.GetOrDef(map1, "end", "");
-                String date = MapUtils.GetOrDef(map1, "date", "");
+                String begin = MapUtils.getOrDef(map1, "begin", "");
+                String end = MapUtils.getOrDef(map1, "end", "");
+                String date = MapUtils.getOrDef(map1, "date", "");
                 String[] begins = new String[2];
                 String[] ends = new String[2];
                 String[] dates = new String[2];
@@ -391,9 +391,9 @@ public class FlightInfo {
                 }
                 break;
             case QUERYFUZZYWAYLIST:
-                begin = MapUtils.GetOrDef(map1, "begin", "");
-                end = MapUtils.GetOrDef(map1, "end", "");
-                date = MapUtils.GetOrDef(map1, "date", "");
+                begin = MapUtils.getOrDef(map1, "begin", "");
+                end = MapUtils.getOrDef(map1, "end", "");
+                date = MapUtils.getOrDef(map1, "date", "");
                 if (date.contains(",")) {
                     date = date.substring(0, date.indexOf(","));
                 }
@@ -405,96 +405,95 @@ public class FlightInfo {
                 break;
             case QUERYFONEWAYDETAIL:
                 flightInfo = new FlightInfo();
-                flightInfo.setDepCity(MapUtils.GetOrDef(map1, "begin", ""));
-                flightInfo.setArrCity(MapUtils.GetOrDef(map1, "end", ""));
+                flightInfo.setDepCity(MapUtils.getOrDef(map1, "begin", ""));
+                flightInfo.setArrCity(MapUtils.getOrDef(map1, "end", ""));
 
-                String finfo = StringUtil.sub(MapUtils.GetOrDef(map1, "time4log", ""), '{', '}');
+                String finfo = StringUtil.sub(MapUtils.getOrDef(map1, "time4log", ""), '{', '}');
                 Map<String, String> map2 = WapLogUtils.splitToMap(finfo);
-                flightInfo.setDepDate(MapUtils.GetOrDef(map2, "depDate", ""));
-                flightInfo.setDepCode(MapUtils.GetOrDef(map2, "depAirportCode", ""));
-                flightInfo.setArrCode(MapUtils.GetOrDef(map2, "arrAirportCode", ""));
-                flightInfo.setDepTime(MapUtils.GetOrDef(map2, "depTime", ""));
-                flightInfo.setArrTime(MapUtils.GetOrDef(map2, "arrTime", ""));
-                flightInfo.setFlightNo(MapUtils.GetOrDef(map2, "airCode", ""));
-                flightInfo.setPlaneType(MapUtils.GetOrDef(map2, "planeType", ""));
+                flightInfo.setDepDate(MapUtils.getOrDef(map2, "depDate", ""));
+                flightInfo.setDepCode(MapUtils.getOrDef(map2, "depAirportCode", ""));
+                flightInfo.setArrCode(MapUtils.getOrDef(map2, "arrAirportCode", ""));
+                flightInfo.setDepTime(MapUtils.getOrDef(map2, "depTime", ""));
+                flightInfo.setArrTime(MapUtils.getOrDef(map2, "arrTime", ""));
+                flightInfo.setFlightNo(MapUtils.getOrDef(map2, "airCode", ""));
+                flightInfo.setPlaneType(MapUtils.getOrDef(map2, "planeType", ""));
                 fInfos.add(flightInfo);
                 break;
             case QUERYFROUNDWAYDETAIL:
                 flightInfo = new FlightInfo();
-                flightInfo.setDepCity(MapUtils.GetOrDef(map1, "depCity", ""));
-                flightInfo.setArrCity(MapUtils.GetOrDef(map1, "arrCity", ""));
+                flightInfo.setDepCity(MapUtils.getOrDef(map1, "depCity", ""));
+                flightInfo.setArrCity(MapUtils.getOrDef(map1, "arrCity", ""));
 
-                finfo = StringUtil.sub(MapUtils.GetOrDef(map1, "time4log", ""), '{', '}');
+                finfo = StringUtil.sub(MapUtils.getOrDef(map1, "time4log", ""), '{', '}');
                 if (finfo != null && finfo.length() > 10) {
                     Map<String, String> map_tmp = WapLogUtils.splitToMap(finfo);
-                    flightInfo.setDepDate(MapUtils.GetOrDef(map_tmp, "depDate", ""));
-                    flightInfo.setDepCode(MapUtils.GetOrDef(map_tmp, "depAirportCode", ""));
-                    flightInfo.setArrCode(MapUtils.GetOrDef(map_tmp, "arrAirportCode", ""));
-                    flightInfo.setDepTime(MapUtils.GetOrDef(map_tmp, "depTime", ""));
-                    flightInfo.setArrTime(MapUtils.GetOrDef(map_tmp, "arrTime", ""));
-                    flightInfo.setFlightNo(MapUtils.GetOrDef(map_tmp, "airCode", ""));
-                    flightInfo.setPlaneType(MapUtils.GetOrDef(map_tmp, "planeType", ""));
+                    flightInfo.setDepDate(MapUtils.getOrDef(map_tmp, "depDate", ""));
+                    flightInfo.setDepCode(MapUtils.getOrDef(map_tmp, "depAirportCode", ""));
+                    flightInfo.setArrCode(MapUtils.getOrDef(map_tmp, "arrAirportCode", ""));
+                    flightInfo.setDepTime(MapUtils.getOrDef(map_tmp, "depTime", ""));
+                    flightInfo.setArrTime(MapUtils.getOrDef(map_tmp, "arrTime", ""));
+                    flightInfo.setFlightNo(MapUtils.getOrDef(map_tmp, "airCode", ""));
+                    flightInfo.setPlaneType(MapUtils.getOrDef(map_tmp, "planeType", ""));
                 }
                 fInfos.add(flightInfo);
 
                 flightInfo = new FlightInfo();
-                flightInfo.setDepCity(MapUtils.GetOrDef(map1, "end", ""));
-                flightInfo.setArrCity(MapUtils.GetOrDef(map1, "begin", ""));
-                String bfinfo = StringUtil.sub(MapUtils.GetOrDef(map1, "bfinfo", ""), '{', '}');
+                flightInfo.setDepCity(MapUtils.getOrDef(map1, "end", ""));
+                flightInfo.setArrCity(MapUtils.getOrDef(map1, "begin", ""));
+                String bfinfo = StringUtil.sub(MapUtils.getOrDef(map1, "bfinfo", ""), '{', '}');
                 if (bfinfo != null && bfinfo.length() > 10) {
                     Map<String, String> map_tmp = WapLogUtils.splitToMap(bfinfo);
-                    flightInfo.setDepDate(MapUtils.GetOrDef(map_tmp, "depDate", ""));
-                    flightInfo.setDepCode(MapUtils.GetOrDef(map_tmp, "depAirportCode", ""));
-                    flightInfo.setArrCode(MapUtils.GetOrDef(map_tmp, "arrAirportCode", ""));
-                    flightInfo.setDepTime(MapUtils.GetOrDef(map_tmp, "depTime", ""));
-                    flightInfo.setArrTime(MapUtils.GetOrDef(map_tmp, "arrTime", ""));
-                    flightInfo.setFlightNo(MapUtils.GetOrDef(map_tmp, "airCode", ""));
-                    flightInfo.setPlaneType(MapUtils.GetOrDef(map_tmp, "planeType", ""));
+                    flightInfo.setDepDate(MapUtils.getOrDef(map_tmp, "depDate", ""));
+                    flightInfo.setDepCode(MapUtils.getOrDef(map_tmp, "depAirportCode", ""));
+                    flightInfo.setArrCode(MapUtils.getOrDef(map_tmp, "arrAirportCode", ""));
+                    flightInfo.setDepTime(MapUtils.getOrDef(map_tmp, "depTime", ""));
+                    flightInfo.setArrTime(MapUtils.getOrDef(map_tmp, "arrTime", ""));
+                    flightInfo.setFlightNo(MapUtils.getOrDef(map_tmp, "airCode", ""));
+                    flightInfo.setPlaneType(MapUtils.getOrDef(map_tmp, "planeType", ""));
                 }
                 fInfos.add(flightInfo);
                 break;
             case QUERYFMOREWAYDETAIL:
                 flightInfo = new FlightInfo();
-                flightInfo.setDepCity(MapUtils.GetOrDef(map1, "depCity", ""));
-                flightInfo.setArrCity(MapUtils.GetOrDef(map1, "transCity", ""));
-                String finfo1 = StringUtil.sub(MapUtils.GetOrDef(map1, "time4log", ""), '{', '}');
-                System.out.println(finfo1);
+                flightInfo.setDepCity(MapUtils.getOrDef(map1, "depCity", ""));
+                flightInfo.setArrCity(MapUtils.getOrDef(map1, "transCity", ""));
+                String finfo1 = StringUtil.sub(MapUtils.getOrDef(map1, "time4log", ""), '{', '}');
                 if (finfo1 != null && finfo1.length() > 10) {
                     Map<String, String> map_tmp = WapLogUtils.splitToMap(finfo1);
-                    flightInfo.setDepDate(MapUtils.GetOrDef(map_tmp, "depDate", ""));
-                    flightInfo.setDepCode(MapUtils.GetOrDef(map_tmp, "depAirportCode", ""));
-                    flightInfo.setArrCode(MapUtils.GetOrDef(map_tmp, "arrAirportCode", ""));
-                    flightInfo.setDepTime(MapUtils.GetOrDef(map_tmp, "depTime", ""));
-                    flightInfo.setArrTime(MapUtils.GetOrDef(map_tmp, "arrTime", ""));
-                    flightInfo.setFlightNo(MapUtils.GetOrDef(map_tmp, "airCode", ""));
-                    flightInfo.setPlaneType(MapUtils.GetOrDef(map_tmp, "planeType", ""));
+                    flightInfo.setDepDate(MapUtils.getOrDef(map_tmp, "depDate", ""));
+                    flightInfo.setDepCode(MapUtils.getOrDef(map_tmp, "depAirportCode", ""));
+                    flightInfo.setArrCode(MapUtils.getOrDef(map_tmp, "arrAirportCode", ""));
+                    flightInfo.setDepTime(MapUtils.getOrDef(map_tmp, "depTime", ""));
+                    flightInfo.setArrTime(MapUtils.getOrDef(map_tmp, "arrTime", ""));
+                    flightInfo.setFlightNo(MapUtils.getOrDef(map_tmp, "airCode", ""));
+                    flightInfo.setPlaneType(MapUtils.getOrDef(map_tmp, "planeType", ""));
 
                 }
                 fInfos.add(flightInfo);
 
                 flightInfo = new FlightInfo();
-                flightInfo.setDepCity(MapUtils.GetOrDef(map1, "transCity", ""));
-                flightInfo.setArrCity(MapUtils.GetOrDef(map1, "arrCity", ""));
-                String finfo2 = StringUtil.sub(MapUtils.GetOrDef(map1, "finfo2", ""), '{', '}');
+                flightInfo.setDepCity(MapUtils.getOrDef(map1, "transCity", ""));
+                flightInfo.setArrCity(MapUtils.getOrDef(map1, "arrCity", ""));
+                String finfo2 = StringUtil.sub(MapUtils.getOrDef(map1, "finfo2", ""), '{', '}');
                 if (finfo2 != null && finfo2.length() > 10) {
                     Map<String, String> map_tmp = WapLogUtils.splitToMap(finfo2);
-                    flightInfo.setDepDate(MapUtils.GetOrDef(map_tmp, "depDate", ""));
-                    flightInfo.setDepCode(MapUtils.GetOrDef(map_tmp, "depAirportCode", ""));
-                    flightInfo.setArrCode(MapUtils.GetOrDef(map_tmp, "arrAirportCode", ""));
-                    flightInfo.setDepTime(MapUtils.GetOrDef(map_tmp, "depTime", ""));
-                    flightInfo.setArrTime(MapUtils.GetOrDef(map_tmp, "arrTime", ""));
-                    flightInfo.setFlightNo(MapUtils.GetOrDef(map_tmp, "airCode", ""));
-                    flightInfo.setPlaneType(MapUtils.GetOrDef(map_tmp, "planeType", ""));
+                    flightInfo.setDepDate(MapUtils.getOrDef(map_tmp, "depDate", ""));
+                    flightInfo.setDepCode(MapUtils.getOrDef(map_tmp, "depAirportCode", ""));
+                    flightInfo.setArrCode(MapUtils.getOrDef(map_tmp, "arrAirportCode", ""));
+                    flightInfo.setDepTime(MapUtils.getOrDef(map_tmp, "depTime", ""));
+                    flightInfo.setArrTime(MapUtils.getOrDef(map_tmp, "arrTime", ""));
+                    flightInfo.setFlightNo(MapUtils.getOrDef(map_tmp, "airCode", ""));
+                    flightInfo.setPlaneType(MapUtils.getOrDef(map_tmp, "planeType", ""));
                 }
                 fInfos.add(flightInfo);
                 break;
 
             case INTERFOWDETAIL:
                 flightInfo = new FlightInfo();
-                flightInfo.setDepCity(MapUtils.GetOrDef(map1, "begin", ""));
-                flightInfo.setArrCity(MapUtils.GetOrDef(map1, "end", ""));
-                flightInfo.setDepDate(MapUtils.GetOrDef(map1, "date", ""));
-                flightInfo.setFlightNo(MapUtils.GetOrDef(map1, "airCode", ""));
+                flightInfo.setDepCity(MapUtils.getOrDef(map1, "begin", ""));
+                flightInfo.setArrCity(MapUtils.getOrDef(map1, "end", ""));
+                flightInfo.setDepDate(MapUtils.getOrDef(map1, "date", ""));
+                flightInfo.setFlightNo(MapUtils.getOrDef(map1, "airCode", ""));
                 fInfos.add(flightInfo);
                 break;
             case INTERTTSAV:
@@ -507,16 +506,16 @@ public class FlightInfo {
                 for (String string : list_101) {
                     Map<String, String> map_tmp = WapLogUtils.splitToMap(string);
                     flightInfo = new FlightInfo();
-                    flightInfo.setDepCity(MapUtils.GetOrDef(map_tmp, "depCity", ""));
-                    flightInfo.setArrCity(MapUtils.GetOrDef(map_tmp, "arrCity", ""));
-                    flightInfo.setDepCode(MapUtils.GetOrDef(map_tmp, "depAirportCode", ""));
-                    flightInfo.setArrCode(MapUtils.GetOrDef(map_tmp, "arrAirportCode", ""));
-                    flightInfo.setDepDate(MapUtils.GetOrDef(map_tmp, "depDate", ""));
-                    flightInfo.setArrDate(MapUtils.GetOrDef(map_tmp, "arrDate", ""));
-                    flightInfo.setDepTime(MapUtils.GetOrDef(map_tmp, "depTime", ""));
-                    flightInfo.setArrTime(MapUtils.GetOrDef(map_tmp, "arrTime", ""));
-                    flightInfo.setFlightNo(MapUtils.GetOrDef(map_tmp, "airCode", ""));
-                    flightInfo.setPlaneType(MapUtils.GetOrDef(map_tmp, "planeType", ""));
+                    flightInfo.setDepCity(MapUtils.getOrDef(map_tmp, "depCity", ""));
+                    flightInfo.setArrCity(MapUtils.getOrDef(map_tmp, "arrCity", ""));
+                    flightInfo.setDepCode(MapUtils.getOrDef(map_tmp, "depAirportCode", ""));
+                    flightInfo.setArrCode(MapUtils.getOrDef(map_tmp, "arrAirportCode", ""));
+                    flightInfo.setDepDate(MapUtils.getOrDef(map_tmp, "depDate", ""));
+                    flightInfo.setArrDate(MapUtils.getOrDef(map_tmp, "arrDate", ""));
+                    flightInfo.setDepTime(MapUtils.getOrDef(map_tmp, "depTime", ""));
+                    flightInfo.setArrTime(MapUtils.getOrDef(map_tmp, "arrTime", ""));
+                    flightInfo.setFlightNo(MapUtils.getOrDef(map_tmp, "airCode", ""));
+                    flightInfo.setPlaneType(MapUtils.getOrDef(map_tmp, "planeType", ""));
                     if (count < cabinArr.length) {
                         flightInfo.setCabin(cabinArr[count]);
                     } else {
@@ -531,37 +530,37 @@ public class FlightInfo {
                 for (String string : list_101) {
                     Map<String, String> map_tmp = WapLogUtils.splitToMap(string);
                     flightInfo = new FlightInfo();
-                    flightInfo.setDepCity(MapUtils.GetOrDef(map_tmp, "depCity", ""));
-                    flightInfo.setArrCity(MapUtils.GetOrDef(map_tmp, "arrCity", ""));
-                    flightInfo.setDepCode(MapUtils.GetOrDef(map_tmp, "depApCode", ""));
-                    flightInfo.setArrCode(MapUtils.GetOrDef(map_tmp, "arrApCode", ""));
-                    flightInfo.setDepDate(MapUtils.GetOrDef(map_tmp, "depDate", ""));
-                    flightInfo.setArrDate(MapUtils.GetOrDef(map_tmp, "arrDate", ""));
-                    flightInfo.setDepTime(MapUtils.GetOrDef(map_tmp, "depTime", ""));
-                    flightInfo.setArrTime(MapUtils.GetOrDef(map_tmp, "arrTime", ""));
-                    flightInfo.setFlightNo(MapUtils.GetOrDef(map_tmp, "flightNo", ""));
-                    flightInfo.setCompanyCode(MapUtils.GetOrDef(map_tmp, "airlineCode", ""));
-                    flightInfo.setCabin(MapUtils.GetOrDef(map_tmp, "cabin", ""));
-                    flightInfo.setCabinDesc(MapUtils.GetOrDef(map_tmp, "cabinDesc", ""));
-                    flightInfo.setPlaneType(MapUtils.GetOrDef(map_tmp, "planeType", ""));
+                    flightInfo.setDepCity(MapUtils.getOrDef(map_tmp, "depCity", ""));
+                    flightInfo.setArrCity(MapUtils.getOrDef(map_tmp, "arrCity", ""));
+                    flightInfo.setDepCode(MapUtils.getOrDef(map_tmp, "depApCode", ""));
+                    flightInfo.setArrCode(MapUtils.getOrDef(map_tmp, "arrApCode", ""));
+                    flightInfo.setDepDate(MapUtils.getOrDef(map_tmp, "depDate", ""));
+                    flightInfo.setArrDate(MapUtils.getOrDef(map_tmp, "arrDate", ""));
+                    flightInfo.setDepTime(MapUtils.getOrDef(map_tmp, "depTime", ""));
+                    flightInfo.setArrTime(MapUtils.getOrDef(map_tmp, "arrTime", ""));
+                    flightInfo.setFlightNo(MapUtils.getOrDef(map_tmp, "flightNo", ""));
+                    flightInfo.setCompanyCode(MapUtils.getOrDef(map_tmp, "airlineCode", ""));
+                    flightInfo.setCabin(MapUtils.getOrDef(map_tmp, "cabin", ""));
+                    flightInfo.setCabinDesc(MapUtils.getOrDef(map_tmp, "cabinDesc", ""));
+                    flightInfo.setPlaneType(MapUtils.getOrDef(map_tmp, "planeType", ""));
                     fInfos.add(flightInfo);
                 }
                 break;
 
             case INTERFRWDETAIL:
                 flightInfo = new FlightInfo();
-                flightInfo.setDepCity(MapUtils.GetOrDef(map1, "depCity", ""));
-                flightInfo.setArrCity(MapUtils.GetOrDef(map1, "arrCity", ""));
-                flightInfo.setDepDate(MapUtils.GetOrDef(map1, "goDate", ""));
-                String backDate = MapUtils.GetOrDef(map1, "backDate", "");
-                String airCodeCol = MapUtils.GetOrDef(map1, "airCode", "");
+                flightInfo.setDepCity(MapUtils.getOrDef(map1, "depCity", ""));
+                flightInfo.setArrCity(MapUtils.getOrDef(map1, "arrCity", ""));
+                flightInfo.setDepDate(MapUtils.getOrDef(map1, "goDate", ""));
+                String backDate = MapUtils.getOrDef(map1, "backDate", "");
+                String airCodeCol = MapUtils.getOrDef(map1, "airCode", "");
                 String[] airCodeColArr = airCodeCol.split("_");
                 if (airCodeColArr.length >= 2 && !backDate.equals("")) {
                     flightInfo.setFlightNo(airCodeColArr[0]);
                     fInfos.add(flightInfo);
                     flightInfo = new FlightInfo();
-                    flightInfo.setDepCity(MapUtils.GetOrDef(map1, "arrCity", ""));
-                    flightInfo.setArrCity(MapUtils.GetOrDef(map1, "depCity", ""));
+                    flightInfo.setDepCity(MapUtils.getOrDef(map1, "arrCity", ""));
+                    flightInfo.setArrCity(MapUtils.getOrDef(map1, "depCity", ""));
                     flightInfo.setDepDate(backDate);
                     flightInfo.setFlightNo(airCodeColArr[1]);
                     fInfos.add(flightInfo);
@@ -574,7 +573,7 @@ public class FlightInfo {
 
             case INTERFMWDETAIL:
             case INTERMIXFRWDETAIL:
-                airCodeCol = MapUtils.GetOrDef(map1, "airCode", "");
+                airCodeCol = MapUtils.getOrDef(map1, "airCode", "");
                 if (airCodeCol.contains(";")) {
                     String[] fInfos_loop = airCodeCol.split(";");
                     int count_tmp = 0;
@@ -585,11 +584,11 @@ public class FlightInfo {
                         String[] fInfos_tmp = str_tmp.split("\\|");
                         flightInfo = new FlightInfo();
                         if (count_tmp == 0) {
-                            flightInfo.setDepCity(MapUtils.GetOrDef(map1, "depCity", ""));
-                            flightInfo.setArrCity(MapUtils.GetOrDef(map1, "transCity", ""));
+                            flightInfo.setDepCity(MapUtils.getOrDef(map1, "depCity", ""));
+                            flightInfo.setArrCity(MapUtils.getOrDef(map1, "transCity", ""));
                         } else {
-                            flightInfo.setDepCity(MapUtils.GetOrDef(map1, "transCity", ""));
-                            flightInfo.setArrCity(MapUtils.GetOrDef(map1, "arrCity", ""));
+                            flightInfo.setDepCity(MapUtils.getOrDef(map1, "transCity", ""));
+                            flightInfo.setArrCity(MapUtils.getOrDef(map1, "arrCity", ""));
                         }
                         if (fInfos_tmp.length >= 3) {
                             flightInfo.setFlightNo(fInfos_tmp[0]);
@@ -611,19 +610,19 @@ public class FlightInfo {
                     }
                 } else {
                     flightInfo = new FlightInfo();
-                    flightInfo.setDepCity(MapUtils.GetOrDef(map1, "depCity", ""));
-                    flightInfo.setArrCity(MapUtils.GetOrDef(map1, "arrCity", ""));
-                    flightInfo.setFlightNo(MapUtils.GetOrDef(map1, "airCode", ""));
+                    flightInfo.setDepCity(MapUtils.getOrDef(map1, "depCity", ""));
+                    flightInfo.setArrCity(MapUtils.getOrDef(map1, "arrCity", ""));
+                    flightInfo.setFlightNo(MapUtils.getOrDef(map1, "airCode", ""));
                     fInfos.add(flightInfo);
                 }
 
                 break;
 
             case QUERYFMULTIWAYDETAIL:
-                begin = MapUtils.GetOrDef(map1, "begin", "");
-                end = MapUtils.GetOrDef(map1, "end", "");
-                date = MapUtils.GetOrDef(map1, "date", "");
-                airCodeCol = MapUtils.GetOrDef(map1, "airCode", "");
+                begin = MapUtils.getOrDef(map1, "begin", "");
+                end = MapUtils.getOrDef(map1, "end", "");
+                date = MapUtils.getOrDef(map1, "date", "");
+                airCodeCol = MapUtils.getOrDef(map1, "airCode", "");
                 begins = new String[2];
                 ends = new String[2];
                 dates = new String[2];
@@ -659,15 +658,15 @@ public class FlightInfo {
                 for (String string : list_101) {
                     Map<String, String> map_tmp = WapLogUtils.splitToMap(string);
                     flightInfo = new FlightInfo();
-                    flightInfo.setDepCity(MapUtils.GetOrDef(map_tmp, "depCity", ""));
-                    flightInfo.setArrCity(MapUtils.GetOrDef(map_tmp, "arrCity", ""));
-                    flightInfo.setDepCode(MapUtils.GetOrDef(map_tmp, "depAirportCode", ""));
-                    flightInfo.setArrCode(MapUtils.GetOrDef(map_tmp, "arrAirportCode", ""));
-                    flightInfo.setDepDate(MapUtils.GetOrDef(map_tmp, "depDate", ""));
-                    flightInfo.setArrDate(MapUtils.GetOrDef(map_tmp, "arrDate", ""));
-                    flightInfo.setDepTime(MapUtils.GetOrDef(map_tmp, "depTime", ""));
-                    flightInfo.setArrTime(MapUtils.GetOrDef(map_tmp, "arrTime", ""));
-                    flightInfo.setFlightNo(MapUtils.GetOrDef(map_tmp, "airCode", ""));
+                    flightInfo.setDepCity(MapUtils.getOrDef(map_tmp, "depCity", ""));
+                    flightInfo.setArrCity(MapUtils.getOrDef(map_tmp, "arrCity", ""));
+                    flightInfo.setDepCode(MapUtils.getOrDef(map_tmp, "depAirportCode", ""));
+                    flightInfo.setArrCode(MapUtils.getOrDef(map_tmp, "arrAirportCode", ""));
+                    flightInfo.setDepDate(MapUtils.getOrDef(map_tmp, "depDate", ""));
+                    flightInfo.setArrDate(MapUtils.getOrDef(map_tmp, "arrDate", ""));
+                    flightInfo.setDepTime(MapUtils.getOrDef(map_tmp, "depTime", ""));
+                    flightInfo.setArrTime(MapUtils.getOrDef(map_tmp, "arrTime", ""));
+                    flightInfo.setFlightNo(MapUtils.getOrDef(map_tmp, "airCode", ""));
                     fInfos.add(flightInfo);
                 }
                 break;

@@ -79,4 +79,41 @@ public class StringUtil {
             return "";
         }
     }
+
+    public static String sub(String originString, int s, int e){
+        if(originString == null || originString.equals("")){
+            return "";
+        }else{
+            int sLen = originString.length();
+            if(s >= 0 && e>=s) {
+                if (sLen >= e) {
+                    return originString.substring(s, e);
+                }
+                else if(sLen>s) {
+                    return originString.substring(s);
+                }
+                else {
+                    return "";
+                }
+            }
+            else {
+                return "";
+            }
+        }
+
+    }
+
+    public static String nullToEmpty(String string){
+        if(string == null || string.equals("null")){
+            return "";
+        }
+        else{
+            return string;
+        }
+    }
+
+    public static void splitTest(String s, String splitter){
+        System.out.println(s.split(splitter).length);
+    }
+
 }

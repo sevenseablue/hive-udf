@@ -197,7 +197,6 @@ public class IdNoUtil {
     public static String getGenderFromIdNo(String idNo) {
         String gender = "未知";
         if ((idNo == null) || (idNo.trim().equals("")) || (idNo.trim().length() < 15)) {
-            System.out.println("idNo : " + idNo);
             return gender;
         }
 

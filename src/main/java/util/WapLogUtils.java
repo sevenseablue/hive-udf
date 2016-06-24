@@ -156,12 +156,12 @@ public class WapLogUtils {
                 flagInts[classMap.get(ch)] += operMap.get(ch);
             }
             if ((arr[i] == splitter) && flagInts[0] == 0 && flagInts[1] == 0) {
-                wapLogMapPut(map, log.substring(s, i));
+                wapLogMapPut(map, StringUtil.nullToEmpty(log.substring(s, i)));
                 s = i + 1;
             }
         }
         if (s < arr.length) {
-            wapLogMapPut(map, log.substring(s));
+            wapLogMapPut(map, StringUtil.nullToEmpty(log.substring(s)));
         }
 
         return map;
@@ -181,7 +181,7 @@ public class WapLogUtils {
 //    }
 
     public static String mapGetOrDefault(Map<String, String> map, String key) {
-        return MapUtils.GetOrDef(map, key, "");
+        return MapUtils.getOrDef(map, key, "");
     }
 
     public static final String[] searchActions = new String[]{
@@ -226,7 +226,7 @@ public class WapLogUtils {
             for(int j=0; j<list1.size(); j++){
                 String str1 = list1.get(j);
                 Map<String, String> map1 = WapLogUtils.splitToMap(str1);
-                String str2 = MapUtils.GetOrDef(map1, route[i], "");
+                String str2 = MapUtils.getOrDef(map1, route[i], "");
                 if(str2==null || str2.equals("")){
                     break;
                 }
@@ -258,7 +258,7 @@ public class WapLogUtils {
             for(int j=0; j<list1.size(); j++){
                 String str1 = list1.get(j);
                 Map<String, String> map1 = WapLogUtils.splitToMap(str1);
-                String str2 = MapUtils.GetOrDef(map1, route[i], "");
+                String str2 = MapUtils.getOrDef(map1, route[i], "");
                 if(str2==null || str2.equals("")){
                     break;
                 }
@@ -286,7 +286,7 @@ public class WapLogUtils {
             for(int j=0; j<list1.size(); j++){
                 String str1 = list1.get(j);
                 Map<String, String> map1 = WapLogUtils.splitToMap(str1);
-                String str2 = MapUtils.GetOrDef(map1, route[i], "");
+                String str2 = MapUtils.getOrDef(map1, route[i], "");
                 if(str2==null || str2.equals("")){
                     break;
                 }
