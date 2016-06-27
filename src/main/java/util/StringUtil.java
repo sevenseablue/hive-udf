@@ -18,7 +18,7 @@ public class StringUtil {
         else{
             e = originString.indexOf(ce, s);
         }
-        if(s>=0 && e>=s){
+        if(s>0 && e>=s){
             return originString.substring(s, e);
         }
         else{
@@ -46,7 +46,7 @@ public class StringUtil {
     public static String sub(String originString, char cs, int e, boolean ceLast){
         int s = originString.indexOf(cs)+1;
 
-        if(s>=0 && e>=s){
+        if(s>0 && e>=s){
             return originString.substring(s, e);
         }
         else{
@@ -72,7 +72,7 @@ public class StringUtil {
         else{
             e = originString.indexOf(ce, s);
         }
-        if(s>=0 && e>=s){
+        if(s>0 && e>=s){
             return originString.substring(s, e);
         }
         else{
@@ -116,4 +116,7 @@ public class StringUtil {
         System.out.println(s.split(splitter).length);
     }
 
+    public static void main(String[] args) {
+
+    }
 }

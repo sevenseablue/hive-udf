@@ -14,9 +14,27 @@ public class FlightLog {
     String ma;
     String idfa;
     String osVersion;
+    String bstatus;
+    String bstatsDes;
     List<FlightInfo> fInfos;
 
     public FlightLog() {
+    }
+
+    public String getBstatus() {
+        return bstatus;
+    }
+
+    public void setBstatus(String bstatus) {
+        this.bstatus = bstatus;
+    }
+
+    public String getBstatsDes() {
+        return bstatsDes;
+    }
+
+    public void setBstatsDes(String bstatsDes) {
+        this.bstatsDes = bstatsDes;
     }
 
     public String getPageName() {
@@ -84,6 +102,8 @@ public class FlightLog {
                 ", ma='" + ma + '\'' +
                 ", idfa='" + idfa + '\'' +
                 ", osVersion='" + osVersion + '\'' +
+                ", bstatus='" + bstatus + '\'' +
+                ", bstatsDes='" + bstatsDes + '\'' +
                 ", fInfos=" + fInfos +
                 '}';
     }
@@ -97,6 +117,8 @@ public class FlightLog {
                 .append(StringUtil.nullToEmpty(lgtLog)).append(delim1)
                 .append(StringUtil.nullToEmpty(ma)).append(delim1)
                 .append(StringUtil.nullToEmpty(osVersion)).append(delim1)
+                .append(StringUtil.nullToEmpty(bstatus)).append(delim1)
+                .append(StringUtil.nullToEmpty(bstatsDes)).append(delim1)
                 .append(FlightInfo.listToHive(fInfos));
 
         return sb.toString();
@@ -112,7 +134,8 @@ public class FlightLog {
         flightLog.setMa(MapUtils.getOrDef(map1, "ma", ""));
         flightLog.setOsVersion(MapUtils.getOrDef(map1, "osVersion", ""));
         flightLog.setIdfa(MapUtils.getOrDef(map1, "idfa", ""));
-
+        flightLog.setBstatus(MapUtils.getOrDef(map1, "bstatus", ""));
+        flightLog.setBstatsDes(MapUtils.getOrDef(map1, "bstatsDes", ""));
 
         ArrayList<FlightInfo> fInfos = new ArrayList<FlightInfo>();
         FlightInfo flightInfo;
@@ -158,6 +181,30 @@ public class FlightLog {
                     flightInfo.setPlaneType(MapUtils.getOrDef(map_tmp, "planeType", ""));
                     fInfos.add(flightInfo);
                 }
+                if(fInfos.size() == 0){
+                    flightInfo = new FlightInfo();
+                    flightInfo.setDepCity(MapUtils.getOrDef(map1, "begin", ""));
+                    flightInfo.setArrCity(MapUtils.getOrDef(map1, "end", ""));
+                    flightInfo.setDepDate(MapUtils.getOrDef(map1, "goDate", ""));
+                    String flightKey = MapUtils.getOrDef(map1, "flightKey", "");
+                    if(flightKey.contains("_")) {
+                        flightInfo.setFlightNo(StringUtil.sub(flightKey, 0, '_', false));
+                    }
+                    else{
+                        flightInfo.setFlightNo(flightKey);
+                    }
+                    fInfos.add(flightInfo);
+                    String backDate = MapUtils.getOrDef(map1, "backDate", "");
+                    if (backDate != null && !backDate.equals("")) {
+                        flightInfo = new FlightInfo();
+                        flightInfo.setDepCity(MapUtils.getOrDef(map1, "end", ""));
+                        flightInfo.setArrCity(MapUtils.getOrDef(map1, "begin", ""));
+                        flightInfo.setDepDate(MapUtils.getOrDef(map1, "backDate", ""));
+                        flightInfo.setFlightNo(StringUtil.sub(flightKey, '_', flightKey.length(), false));
+                        fInfos.add(flightInfo);
+                    }
+
+                }
                 break;
             case SRVTTSAV:
                 flightInfo = new FlightInfo();
@@ -165,7 +212,13 @@ public class FlightLog {
                 flightInfo.setArrCity(MapUtils.getOrDef(map1, "arriCity", ""));
                 flightInfo.setDepCode(MapUtils.getOrDef(map1, "depcode", ""));
                 flightInfo.setArrCode(MapUtils.getOrDef(map1, "arrcode", ""));
-                flightInfo.setDepDate(MapUtils.getOrDef(map1, "deptDate", ""));
+                String depDate = MapUtils.getOrDef(map1, "deptDate", "");
+                if(!depDate.equals("")) {
+                    flightInfo.setDepDate(depDate);
+                }
+                else{
+                    flightInfo.setDepDate(MapUtils.getOrDef(map1, "date", ""));
+                }
                 flightInfo.setArrDate(MapUtils.getOrDef(map1, "arriDate", ""));
                 flightInfo.setDepTime(MapUtils.getOrDef(map1, "depTime", ""));
                 flightInfo.setArrTime(MapUtils.getOrDef(map1, "arrTime", ""));
@@ -181,6 +234,11 @@ public class FlightLog {
                 list_101 = WapLogUtils.getObjects(log, new String[]{"flightInfo", "goInfos"}, new char[]{'l', 'l'});
                 List<String> list_102 = WapLogUtils.getObjects(log, new String[]{"flightInfo", "backInfos"}, new char[]{'l', 'l'});
                 list_101.addAll(list_102);
+                if(list_101.size() == 0){
+                    list_101 = WapLogUtils.getObjects(log, new String[]{"fInfos", "goInfos"}, new char[]{'l', 'l'});
+                    list_102 = WapLogUtils.getObjects(log, new String[]{"fInfos", "backInfos"}, new char[]{'l', 'l'});
+                    list_101.addAll(list_102);
+                }
                 for (String string : list_101) {
                     Map<String, String> map_tmp = WapLogUtils.splitToMap(string);
                     flightInfo = new FlightInfo();
@@ -205,6 +263,9 @@ public class FlightLog {
                 break;
             case DOMESTICFLIGHTORDERBOOKINGCONTROLLER:
                 list_101 = WapLogUtils.getObjects(log, new String[]{"bookingOut", "flightInfo"}, new char[]{'l', 'l'});
+                if(list_101.size() == 0){
+                    list_101 = WapLogUtils.getObjects(log, new String[]{"bookingInput", "flightInfo"}, new char[]{'l', 'l'});
+                }
                 for (String string : list_101) {
                     Map<String, String> map_tmp = WapLogUtils.splitToMap(string);
                     flightInfo = new FlightInfo();
@@ -373,38 +434,61 @@ public class FlightLog {
                 fInfos.add(flightInfo);
                 break;
             case QUERYFMOREWAYDETAIL:
-                flightInfo = new FlightInfo();
-                flightInfo.setDepCity(MapUtils.getOrDef(map1, "depCity", ""));
-                flightInfo.setArrCity(MapUtils.getOrDef(map1, "transCity", ""));
-                String finfo1 = StringUtil.sub(MapUtils.getOrDef(map1, "time4log", ""), '{', '}');
-                if (finfo1 != null && finfo1.length() > 10) {
-                    Map<String, String> map_tmp = WapLogUtils.splitToMap(finfo1);
-                    flightInfo.setDepDate(MapUtils.getOrDef(map_tmp, "depDate", ""));
-                    flightInfo.setDepCode(MapUtils.getOrDef(map_tmp, "depAirportCode", ""));
-                    flightInfo.setArrCode(MapUtils.getOrDef(map_tmp, "arrAirportCode", ""));
-                    flightInfo.setDepTime(MapUtils.getOrDef(map_tmp, "depTime", ""));
-                    flightInfo.setArrTime(MapUtils.getOrDef(map_tmp, "arrTime", ""));
-                    flightInfo.setFlightNo(MapUtils.getOrDef(map_tmp, "airCode", ""));
-                    flightInfo.setPlaneType(MapUtils.getOrDef(map_tmp, "planeType", ""));
+                String depCity = MapUtils.getOrDef(map1, "depCity", "");
+                if(!depCity.equals("")) {
+                    flightInfo = new FlightInfo();
+                    flightInfo.setDepCity(MapUtils.getOrDef(map1, "depCity", ""));
+                    flightInfo.setArrCity(MapUtils.getOrDef(map1, "transCity", ""));
+                    String finfo1 = StringUtil.sub(MapUtils.getOrDef(map1, "time4log", ""), '{', '}');
+                    if (finfo1 != null && finfo1.length() > 10) {
+                        Map<String, String> map_tmp = WapLogUtils.splitToMap(finfo1);
+                        flightInfo.setDepDate(MapUtils.getOrDef(map_tmp, "depDate", ""));
+                        flightInfo.setDepCode(MapUtils.getOrDef(map_tmp, "depAirportCode", ""));
+                        flightInfo.setArrCode(MapUtils.getOrDef(map_tmp, "arrAirportCode", ""));
+                        flightInfo.setDepTime(MapUtils.getOrDef(map_tmp, "depTime", ""));
+                        flightInfo.setArrTime(MapUtils.getOrDef(map_tmp, "arrTime", ""));
+                        flightInfo.setFlightNo(MapUtils.getOrDef(map_tmp, "airCode", ""));
+                        flightInfo.setPlaneType(MapUtils.getOrDef(map_tmp, "planeType", ""));
 
-                }
-                fInfos.add(flightInfo);
+                    }
+                    fInfos.add(flightInfo);
 
-                flightInfo = new FlightInfo();
-                flightInfo.setDepCity(MapUtils.getOrDef(map1, "transCity", ""));
-                flightInfo.setArrCity(MapUtils.getOrDef(map1, "arrCity", ""));
-                String finfo2 = StringUtil.sub(MapUtils.getOrDef(map1, "finfo2", ""), '{', '}');
-                if (finfo2 != null && finfo2.length() > 10) {
-                    Map<String, String> map_tmp = WapLogUtils.splitToMap(finfo2);
-                    flightInfo.setDepDate(MapUtils.getOrDef(map_tmp, "depDate", ""));
-                    flightInfo.setDepCode(MapUtils.getOrDef(map_tmp, "depAirportCode", ""));
-                    flightInfo.setArrCode(MapUtils.getOrDef(map_tmp, "arrAirportCode", ""));
-                    flightInfo.setDepTime(MapUtils.getOrDef(map_tmp, "depTime", ""));
-                    flightInfo.setArrTime(MapUtils.getOrDef(map_tmp, "arrTime", ""));
-                    flightInfo.setFlightNo(MapUtils.getOrDef(map_tmp, "airCode", ""));
-                    flightInfo.setPlaneType(MapUtils.getOrDef(map_tmp, "planeType", ""));
+                    flightInfo = new FlightInfo();
+                    flightInfo.setDepCity(MapUtils.getOrDef(map1, "transCity", ""));
+                    flightInfo.setArrCity(MapUtils.getOrDef(map1, "arrCity", ""));
+                    String finfo2 = StringUtil.sub(MapUtils.getOrDef(map1, "finfo2", ""), '{', '}');
+                    if (finfo2 != null && finfo2.length() > 10) {
+                        Map<String, String> map_tmp = WapLogUtils.splitToMap(finfo2);
+                        flightInfo.setDepDate(MapUtils.getOrDef(map_tmp, "depDate", ""));
+                        flightInfo.setDepCode(MapUtils.getOrDef(map_tmp, "depAirportCode", ""));
+                        flightInfo.setArrCode(MapUtils.getOrDef(map_tmp, "arrAirportCode", ""));
+                        flightInfo.setDepTime(MapUtils.getOrDef(map_tmp, "depTime", ""));
+                        flightInfo.setArrTime(MapUtils.getOrDef(map_tmp, "arrTime", ""));
+                        flightInfo.setFlightNo(MapUtils.getOrDef(map_tmp, "airCode", ""));
+                        flightInfo.setPlaneType(MapUtils.getOrDef(map_tmp, "planeType", ""));
+                    }
+                    fInfos.add(flightInfo);
                 }
-                fInfos.add(flightInfo);
+                else{
+                    flightInfo = new FlightInfo();
+                    flightInfo.setDepCity(MapUtils.getOrDef(map1, "begin", ""));
+                    flightInfo.setArrCity(MapUtils.getOrDef(map1, "end", ""));
+                    flightInfo.setDepDate(MapUtils.getOrDef(map1, "date", ""));
+                    String flightKey = MapUtils.getOrDef(map1, "code", "");
+                    if(flightKey.contains("/")){
+                        flightInfo.setFlightNo(StringUtil.sub(flightKey, 0, '/', false));
+                        fInfos.add(flightInfo);
+                        flightInfo = new FlightInfo();
+                        flightInfo.setDepCity(MapUtils.getOrDef(map1, "end", ""));
+                        flightInfo.setArrCity(MapUtils.getOrDef(map1, "begin", ""));
+                        flightInfo.setFlightNo(StringUtil.sub(flightKey, '/', flightKey.length(), false));
+                        fInfos.add(flightInfo);
+                    }
+                    else{
+                        flightInfo.setFlightNo(flightKey);
+                        fInfos.add(flightInfo);
+                    }
+                }
                 break;
 
             case INTERFOWDETAIL:
@@ -446,6 +530,9 @@ public class FlightLog {
 
             case INTERTTSAV4ONEBILLNEW:
                 list_101 = WapLogUtils.getObjects(log, new String[]{"flightInfo", "goInfos"}, new char[]{'l', 'l'});
+                if(list_101.size() == 0){
+                    list_101 = WapLogUtils.getObjects(log, new String[]{"fInfos", "goInfos"}, new char[]{'l', 'l'});
+                }
                 for (String string : list_101) {
                     Map<String, String> map_tmp = WapLogUtils.splitToMap(string);
                     flightInfo = new FlightInfo();
