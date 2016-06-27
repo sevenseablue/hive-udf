@@ -34,6 +34,7 @@ public class CodeCity {
     }
 
     public static String get(String key, String defaultStr) {
+        key = key.toUpperCase();
         if (mapMy.containsKey(key)) {
             return mapMy.get(key);
         } else {
