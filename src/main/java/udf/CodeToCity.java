@@ -7,10 +7,9 @@ public class CodeToCity extends UDF {
 
     public String evaluate(String code) {
         String res;
-        if(code == null || code.equals("") || code.toLowerCase().equals("null")){
+        if (code == null || code.equals("") || code.toLowerCase().equals("null")) {
             res = "";
-        }
-        else{
+        } else {
             res = CodeCity.get(code, "");
         }
         return res;

@@ -2,6 +2,7 @@ package util;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import org.apache.commons.collections.map.CaseInsensitiveMap;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -148,7 +149,7 @@ public class WapLogUtils {
         operMap.put('{', 1);
         operMap.put('}', -1);
 
-        Map<String, String> map = Maps.newHashMap();
+        Map<String, String> map = new CaseInsensitiveHM();
         int[] flagInts = new int[2];
         for (int i = 0; i < arr.length; i++) {
             char ch = arr[i];
@@ -197,80 +198,77 @@ public class WapLogUtils {
     };
 
     public static final HashMap<String, String> actionMap = new HashMap<String, String>();
+
     static {
-        for( String s: searchActions){
+        for (String s : searchActions) {
             actionMap.put(s, "list");
         }
-        for( String s: detailActions){
+        for (String s : detailActions) {
             actionMap.put(s, "detail");
         }
-        for( String s: bookingActions){
+        for (String s : bookingActions) {
             actionMap.put(s, "booking");
         }
     }
 
-    public static String getPage(String action){
-        if(actionMap.containsKey(action)){
+    public static String getPage(String action) {
+        if (actionMap.containsKey(action)) {
             return actionMap.get(action);
-        }
-        else{
+        } else {
             return "";
         }
     }
 
-    public static String getObject(String log, String[] route, char[] type){
+    public static String getObject(String log, String[] route, char[] type) {
         List<String> list1 = new ArrayList<String>();
         list1.add(log);
-        for(int i=0; i<type.length; i++){
+        for (int i = 0; i < type.length; i++) {
             List<String> list2 = new ArrayList<String>();
-            for(int j=0; j<list1.size(); j++){
+            for (int j = 0; j < list1.size(); j++) {
                 String str1 = list1.get(j);
                 Map<String, String> map1 = WapLogUtils.splitToMap(str1);
                 String str2 = MapUtils.getOrDef(map1, route[i], "");
-                if(str2==null || str2.equals("")){
+                if (str2 == null || str2.equals("")) {
                     break;
                 }
-                if(type[i] == 'o'){
+                if (type[i] == 'o') {
                     list2.add(str2);
-                }
-                else if(type[i] == 'l'){
+                } else if (type[i] == 'l') {
                     list2.addAll(WapLogUtils.sectionToList(str2));
                 }
             }
             list1 = list2;
-            if(list1.size() == 0){
+            if (list1.size() == 0) {
                 break;
             }
         }
-        if(list1.size() > 0){
+        if (list1.size() > 0) {
             return list1.get(0);
-        }
-        else{
+        } else {
             return "";
         }
     }
 
-    public static List<String> getObjects(String log, String[] route, char[] type){
+    public static List<String> getObjects(String log, String[] route, char[] type) {
         List<String> list1 = new ArrayList<String>();
         list1.add(log);
-        for(int i=0; i<type.length; i++){
+        for (int i = 0; i < type.length; i++) {
             List<String> list2 = new ArrayList<String>();
-            for(int j=0; j<list1.size(); j++){
+            for (int j = 0; j < list1.size(); j++) {
                 String str1 = list1.get(j);
                 Map<String, String> map1 = WapLogUtils.splitToMap(str1);
                 String str2 = MapUtils.getOrDef(map1, route[i], "");
-                if(str2==null || str2.equals("")){
+                if (str2 == null || str2.equals("")) {
                     break;
                 }
-                if(type[i] == 'o'){
+                if (type[i] == 'o') {
                     list2.add(str2);
-                }
-                else if(type[i] == 'l'){
+                } else if (type[i] == 'l') {
                     list2.addAll(WapLogUtils.sectionToList(str2));
                 }
             }
             list1 = list2;
-            if(list1.size() == 0){
+            if (list1.size() == 0) {
                 break;
             }
         }
@@ -278,42 +276,38 @@ public class WapLogUtils {
         return list1;
     }
 
-    public static List<String> getObjects(String log, String[] route, char[] type, String[] on, String[] off){
+    public static List<String> getObjects(String log, String[] route, char[] type, String[] on, String[] off) {
         List<String> list1 = new ArrayList<String>();
         list1.add(log);
-        for(int i=0; i<type.length; i++){
+        for (int i = 0; i < type.length; i++) {
             List<String> list2 = new ArrayList<String>();
-            for(int j=0; j<list1.size(); j++){
+            for (int j = 0; j < list1.size(); j++) {
                 String str1 = list1.get(j);
                 Map<String, String> map1 = WapLogUtils.splitToMap(str1);
                 String str2 = MapUtils.getOrDef(map1, route[i], "");
-                if(str2==null || str2.equals("")){
+                if (str2 == null || str2.equals("")) {
                     break;
                 }
-                if(type[i] == 'o'){
+                if (type[i] == 'o') {
                     list2.add(str2);
-                }
-                else if(type[i] == 'l'){
+                } else if (type[i] == 'l') {
                     list2.addAll(WapLogUtils.sectionToList(str2));
                 }
             }
             list1 = new ArrayList<String>();
 
-            for(String s: list2) {
-                if(on[i].length()==0 && off[i].length()==0){
+            for (String s : list2) {
+                if (on[i].length() == 0 && off[i].length() == 0) {
                     list1.add(s);
-                }
-                else if(on[i].length()==0 && !s.matches(off[i])){
+                } else if (on[i].length() == 0 && !s.matches(off[i])) {
                     list1.add(s);
-                }
-                else if(off[i].length() ==0 && s.matches(on[i])){
+                } else if (off[i].length() == 0 && s.matches(on[i])) {
                     list1.add(s);
-                }
-                else if(on[i].length()!=0 && off[i].length() !=0 && !s.matches(off[i]) && s.matches(on[i])){
+                } else if (on[i].length() != 0 && off[i].length() != 0 && !s.matches(off[i]) && s.matches(on[i])) {
                     list1.add(s);
                 }
             }
-            if(list1.size() == 0){
+            if (list1.size() == 0) {
                 break;
             }
         }
@@ -339,6 +333,32 @@ public class WapLogUtils {
         // only can be log like "[{} {}]" section to list
         for (String log : logs) {
             System.out.println(sectionToList(log));
+        }
+    }
+
+    private static boolean notValid(String str) {
+        if (str == null || str.equals("") || str.toLowerCase().equals("null")) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public static void update(ArrayList<FlightInfo> fInfos) {
+        for (FlightInfo flightInfo : fInfos) {
+            if (notValid(flightInfo.depCity) && !notValid(flightInfo.depCode)) {
+                flightInfo.depCity = CodeCity.get(flightInfo.depCode, "");
+            }
+            if (notValid(flightInfo.arrCity) && !notValid(flightInfo.arrCode)) {
+                flightInfo.arrCity = CodeCity.get(flightInfo.arrCode, "");
+            }
+
+            if (notValid(flightInfo.companyCode) && !notValid(flightInfo.flightNo)) {
+                flightInfo.companyCode = StringUtil.sub(flightInfo.flightNo, 0, 2);
+            }
+            if (notValid(flightInfo.cabinDesc) && !notValid(flightInfo.cabin) && !notValid(flightInfo.companyCode)) {
+                flightInfo.cabinDesc = CabinLevel.get(flightInfo.companyCode, flightInfo.cabin);
+            }
         }
     }
 

@@ -16,7 +16,7 @@ public class FlightLogTest extends TestCase {
 //        BufferedReader br = new BufferedReader(new FileReader("/work/java-projects/hive-udf/src/main/resources/params.check.txt.2"));
         String line = "";
 //        BufferedWriter bw = new BufferedWriter(new FileWriter("/work/java-projects/hive-udf/src/main/resources/params.check.txt.2.out"));
-        while((line = br.readLine())!= null){
+        while ((line = br.readLine()) != null) {
             String[] spli = line.split("\t");
 //            System.out.println(spli[0]); // 3
             System.out.println(spli[3]); // 3

@@ -12,8 +12,7 @@ public class CabinLevel {
         String res;
         if ((airComp.equals("AQ"))) {
             res = "经济舱";
-        }
-        else {
+        } else {
             String key = airComp.trim().replace("\"", "") + "," + cabin.trim();
             res = MapUtils.getOrDef(cabinMap, key, "");
         }
@@ -25,14 +24,14 @@ public class CabinLevel {
         String cabinPath = "cabinInfos.txt";
         BufferedReader br;
         try {
-            br =new BufferedReader(new InputStreamReader(CodeCity.class.getClassLoader().getResourceAsStream(cabinPath)));
+            br = new BufferedReader(new InputStreamReader(CabinLevel.class.getClassLoader().getResourceAsStream(cabinPath)));
             String tmpStr;
             while ((tmpStr = br.readLine()) != null) {
                 int i1 = tmpStr.lastIndexOf(",");
-                if( i1<=0){
+                if (i1 <= 0) {
                     continue;
                 }
-                cabinMap.put(tmpStr.substring(0, i1), tmpStr.substring(i1+1));
+                cabinMap.put(tmpStr.substring(0, i1), tmpStr.substring(i1 + 1));
             }
             br.close();
         } catch (Exception e) {

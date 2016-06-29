@@ -110,7 +110,7 @@ public class FlightLog {
 
     public String toHive() {
         String delim1 = "\001";
-        StringBuilder sb  = new StringBuilder();
+        StringBuilder sb = new StringBuilder();
         sb.append(StringUtil.nullToEmpty(pageName)).append(delim1)
                 .append(StringUtil.nullToEmpty(idfa)).append(delim1)
                 .append(StringUtil.nullToEmpty(latLog)).append(delim1)
@@ -124,7 +124,7 @@ public class FlightLog {
         return sb.toString();
     }
 
-    public static FlightLog getLogs(String action, String log){
+    public static FlightLog getLogs(String action, String log) {
         Action action1 = ActionCls.getAction(action);
         Map<String, String> map1 = WapLogUtils.splitToMap(log);
         FlightLog flightLog = new FlightLog();
@@ -181,16 +181,15 @@ public class FlightLog {
                     flightInfo.setPlaneType(MapUtils.getOrDef(map_tmp, "planeType", ""));
                     fInfos.add(flightInfo);
                 }
-                if(fInfos.size() == 0){
+                if (fInfos.size() == 0) {
                     flightInfo = new FlightInfo();
                     flightInfo.setDepCity(MapUtils.getOrDef(map1, "begin", ""));
                     flightInfo.setArrCity(MapUtils.getOrDef(map1, "end", ""));
                     flightInfo.setDepDate(MapUtils.getOrDef(map1, "goDate", ""));
                     String flightKey = MapUtils.getOrDef(map1, "flightKey", "");
-                    if(flightKey.contains("_")) {
+                    if (flightKey.contains("_")) {
                         flightInfo.setFlightNo(StringUtil.sub(flightKey, 0, '_', false));
-                    }
-                    else{
+                    } else {
                         flightInfo.setFlightNo(flightKey);
                     }
                     fInfos.add(flightInfo);
@@ -213,10 +212,9 @@ public class FlightLog {
                 flightInfo.setDepCode(MapUtils.getOrDef(map1, "depcode", ""));
                 flightInfo.setArrCode(MapUtils.getOrDef(map1, "arrcode", ""));
                 String depDate = MapUtils.getOrDef(map1, "deptDate", "");
-                if(!depDate.equals("")) {
+                if (!depDate.equals("")) {
                     flightInfo.setDepDate(depDate);
-                }
-                else{
+                } else {
                     flightInfo.setDepDate(MapUtils.getOrDef(map1, "date", ""));
                 }
                 flightInfo.setArrDate(MapUtils.getOrDef(map1, "arriDate", ""));
@@ -234,7 +232,7 @@ public class FlightLog {
                 list_101 = WapLogUtils.getObjects(log, new String[]{"flightInfo", "goInfos"}, new char[]{'l', 'l'});
                 List<String> list_102 = WapLogUtils.getObjects(log, new String[]{"flightInfo", "backInfos"}, new char[]{'l', 'l'});
                 list_101.addAll(list_102);
-                if(list_101.size() == 0){
+                if (list_101.size() == 0) {
                     list_101 = WapLogUtils.getObjects(log, new String[]{"fInfos", "goInfos"}, new char[]{'l', 'l'});
                     list_102 = WapLogUtils.getObjects(log, new String[]{"fInfos", "backInfos"}, new char[]{'l', 'l'});
                     list_101.addAll(list_102);
@@ -263,7 +261,7 @@ public class FlightLog {
                 break;
             case DOMESTICFLIGHTORDERBOOKINGCONTROLLER:
                 list_101 = WapLogUtils.getObjects(log, new String[]{"bookingOut", "flightInfo"}, new char[]{'l', 'l'});
-                if(list_101.size() == 0){
+                if (list_101.size() == 0) {
                     list_101 = WapLogUtils.getObjects(log, new String[]{"bookingInput", "flightInfo"}, new char[]{'l', 'l'});
                 }
                 for (String string : list_101) {
@@ -435,7 +433,7 @@ public class FlightLog {
                 break;
             case QUERYFMOREWAYDETAIL:
                 String depCity = MapUtils.getOrDef(map1, "depCity", "");
-                if(!depCity.equals("")) {
+                if (!depCity.equals("")) {
                     flightInfo = new FlightInfo();
                     flightInfo.setDepCity(MapUtils.getOrDef(map1, "depCity", ""));
                     flightInfo.setArrCity(MapUtils.getOrDef(map1, "transCity", ""));
@@ -468,14 +466,13 @@ public class FlightLog {
                         flightInfo.setPlaneType(MapUtils.getOrDef(map_tmp, "planeType", ""));
                     }
                     fInfos.add(flightInfo);
-                }
-                else{
+                } else {
                     flightInfo = new FlightInfo();
                     flightInfo.setDepCity(MapUtils.getOrDef(map1, "begin", ""));
                     flightInfo.setArrCity(MapUtils.getOrDef(map1, "end", ""));
                     flightInfo.setDepDate(MapUtils.getOrDef(map1, "date", ""));
                     String flightKey = MapUtils.getOrDef(map1, "code", "");
-                    if(flightKey.contains("/")){
+                    if (flightKey.contains("/")) {
                         flightInfo.setFlightNo(StringUtil.sub(flightKey, 0, '/', false));
                         fInfos.add(flightInfo);
                         flightInfo = new FlightInfo();
@@ -483,8 +480,7 @@ public class FlightLog {
                         flightInfo.setArrCity(MapUtils.getOrDef(map1, "begin", ""));
                         flightInfo.setFlightNo(StringUtil.sub(flightKey, '/', flightKey.length(), false));
                         fInfos.add(flightInfo);
-                    }
-                    else{
+                    } else {
                         flightInfo.setFlightNo(flightKey);
                         fInfos.add(flightInfo);
                     }
@@ -501,7 +497,7 @@ public class FlightLog {
                 break;
             case INTERTTSAV:
                 cabin = WapLogUtils.getObject(log, new String[]{"cabin"}, new char[]{'o'});
-                String[] cabinArr = cabin.split("/", cabin.length()+1);
+                String[] cabinArr = cabin.split("/", cabin.length() + 1);
                 list_101 = WapLogUtils.getObjects(log, new String[]{"goFInfo"}, new char[]{'l'});
                 list_102 = WapLogUtils.getObjects(log, new String[]{"backFInfo"}, new char[]{'l'});
                 list_101.addAll(list_102);
@@ -530,7 +526,7 @@ public class FlightLog {
 
             case INTERTTSAV4ONEBILLNEW:
                 list_101 = WapLogUtils.getObjects(log, new String[]{"flightInfo", "goInfos"}, new char[]{'l', 'l'});
-                if(list_101.size() == 0){
+                if (list_101.size() == 0) {
                     list_101 = WapLogUtils.getObjects(log, new String[]{"fInfos", "goInfos"}, new char[]{'l', 'l'});
                 }
                 for (String string : list_101) {
@@ -682,37 +678,10 @@ public class FlightLog {
                 break;
         }
 
-        flightLog.update(fInfos);
+        WapLogUtils.update(fInfos);
         flightLog.setfInfos(fInfos);
 
         return flightLog;
-    }
-
-    private boolean notValid(String str){
-        if(str==null || str.equals("") || str.toLowerCase().equals("null")){
-            return true;
-        }
-        else {
-            return false;
-        }
-    }
-
-    private void update(ArrayList<FlightInfo> fInfos) {
-        for(FlightInfo flightInfo: fInfos){
-            if(notValid(flightInfo.depCity)  && !notValid(flightInfo.depCode)) {
-                flightInfo.depCity = CodeCity.get(flightInfo.depCode, "");
-            }
-            if(notValid(flightInfo.arrCity)  && !notValid(flightInfo.arrCode)) {
-                flightInfo.arrCity = CodeCity.get(flightInfo.arrCode, "");
-            }
-
-            if(notValid(flightInfo.companyCode)  && !notValid(flightInfo.flightNo)) {
-                flightInfo.companyCode = StringUtil.sub(flightInfo.flightNo, 0, 2);
-            }
-            if(notValid(flightInfo.cabinDesc) && !notValid(flightInfo.cabin) && !notValid(flightInfo.companyCode)){
-                flightInfo.cabinDesc = CabinLevel.get(flightInfo.companyCode, flightInfo.cabin);
-            }
-        }
     }
 
 }

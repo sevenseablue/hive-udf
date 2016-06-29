@@ -19,7 +19,7 @@ public class UrlToJson {
         return false;
     }
 
-    public static String parse(String log){
+    public static String parse(String log) {
 
         char[] arr = log.toCharArray();
         int s = 0;
@@ -43,22 +43,20 @@ public class UrlToJson {
         StringBuilder sb = new StringBuilder(2048);
         sb.append('{');
         boolean entryed = true;
-        if(arr.length<2){
+        if (arr.length < 2) {
             return null;
         }
 
         for (int i = 1; i < arr.length; i++) {
             char ch = arr[i];
-            if (entryed){
-                if(any(startFlags, ch)){
+            if (entryed) {
+                if (any(startFlags, ch)) {
                     sb.append(ch);
-                }
-                else {
+                } else {
                     sb.append("\"")
-                    .append(ch);
+                            .append(ch);
                 }
-            }
-            else{
+            } else {
 
             }
 
@@ -71,13 +69,13 @@ public class UrlToJson {
     }
 
     public static void main(String[] args) {
-        for (String log: new String[]{
+        for (String log : new String[]{
                 "&",
                 "a=b",
                 "a=b&",
                 "a=b&c=d",
                 "a=b&c=[{d=4&e=[{f=6&g=7}]&e2=[{f2=6&g2=7}]}]"
-        }){
+        }) {
             System.out.println(UrlToJson.parse(log));
         }
 

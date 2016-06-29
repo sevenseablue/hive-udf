@@ -11,7 +11,8 @@ public class SHA256 {
      */
     public static MessageDigest md;
     public static HexBinaryAdapter hba;
-    static{
+
+    static {
         try {
             md = MessageDigest.getInstance("SHA-256");
         } catch (NoSuchAlgorithmException e) {
@@ -26,7 +27,7 @@ public class SHA256 {
     }
 
     public static String encode(String str) throws Exception {
-        if(null == str || "".equals(str)){
+        if (null == str || "".equals(str)) {
             return "";
         }
         return encode(str.getBytes("UTF-8"));
@@ -36,7 +37,7 @@ public class SHA256 {
         for (String str : new String[]{"13888888888", "13888888888", "15810539448", "13041142520", ""}) {
             System.out.println(str + "\t" + SHA256.encode(str));
         }
-        if(args.length > 0) {
+        if (args.length > 0) {
             String str = args[0];
             System.out.println(str + "\t" + SHA256.encode(str));
         }

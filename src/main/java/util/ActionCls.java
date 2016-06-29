@@ -33,11 +33,11 @@ public class ActionCls {
         actionHashMap.put("interTtsAv4OneBillNew", Action.INTERTTSAV4ONEBILLNEW);
         actionHashMap.put("flightBargainIndex", Action.FLIGHTBARGAININDEX);
     }
-    public static Action getAction(String str){
-        if(!actionHashMap.containsKey(str)){
+
+    public static Action getAction(String str) {
+        if (!actionHashMap.containsKey(str)) {
             return Action.OTHER;
-        }
-        else{
+        } else {
             return actionHashMap.get(str);
         }
     }
