@@ -1,11 +1,8 @@
 package util;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * Created by seven on 28/06/16.
@@ -64,10 +61,12 @@ public class FlightLogTouch {
     public String toString() {
         return "FlightLogTouch{" +
                 "pageName='" + pageName + '\'' +
+                ", userName='" + userName + '\'' +
+                ", isInter='" + isInter + '\'' +
+                ", flightType='" + flightType + '\'' +
                 ", fInfos=" + fInfos +
                 '}';
     }
-
 
     public String toHive() {
         String delim1 = "\001";
@@ -82,7 +81,7 @@ public class FlightLogTouch {
     }
 
     public static FlightLogTouch getLogs(String action, String url, String post) {
-        String log = url + (url.contains("?") ? "&" : "?") + post;
+        String log = (url.contains("?") ? url.substring(url.indexOf("?")+1)+"&" : "") + post;
         ActionTouch action1 = ActionClsTouch.getAction(action);
         Map<String, String> map1 = WapLogUtils.splitToMap(log);
         FlightLogTouch flightLogTouch = new FlightLogTouch();
@@ -97,50 +96,56 @@ public class FlightLogTouch {
             case LIST2:
             case LIST3:
             case UNDEFINEDLIST:
-                String flightType = TouchLogUtils.flightTypeCls(MapUtils.getOrDef(map1, "flightType", ""));
+                String flightType = TouchLogUtils.flightTypeCls(MapUtils.getOrDefLower(map1, "flightType", ""));
                 flightLogTouch.setFlightType(flightType);
-                flightLogTouch.setIsInter(MapUtils.getOrDef(map1, "isInterFlight", ""));
-                flightLogTouch.setUserName(MapUtils.getOrDef(map1, "username", ""));
+                flightLogTouch.setIsInter(MapUtils.getOrDefLower(map1, "isInterFlight", ""));
+                flightLogTouch.setUserName(MapUtils.getOrDefLower(map1, "username", ""));
 
                 flightInfo = new FlightInfo();
-                flightInfo.setDepCity(MapUtils.getOrDef(map1, "startCity", ""));
-                flightInfo.setArrCity(MapUtils.getOrDef(map1, "destCity", ""));
-                flightInfo.setDepCode(MapUtils.getOrDef(map1, "startCode", ""));
-                flightInfo.setArrCode(MapUtils.getOrDef(map1, "destCode", ""));
-                flightInfo.setDepDate(MapUtils.getOrDef(map1, "startDate", ""));
+                flightInfo.setDepCity(MapUtils.getOrDefLower(map1, "startCity", ""));
+                flightInfo.setArrCity(MapUtils.getOrDefLower(map1, "destCity", ""));
+                flightInfo.setDepCode(MapUtils.getOrDefLower(map1, "startCode", ""));
+                flightInfo.setArrCode(MapUtils.getOrDefLower(map1, "destCode", ""));
+                flightInfo.setDepDate(MapUtils.getOrDefLower(map1, "startDate", ""));
                 fInfos.add(flightInfo);
-                String backDate = MapUtils.getOrDef(map1, "backDate", "");
+                String backDate = MapUtils.getOrDefLower(map1, "backDate", "");
                 if (flightType.equals("roundWay") || (!flightType.equals("oneWay") && !backDate.equals(""))) {
                     flightInfo = new FlightInfo();
-                    flightInfo.setDepCity(MapUtils.getOrDef(map1, "destCity", ""));
-                    flightInfo.setArrCity(MapUtils.getOrDef(map1, "startCity", ""));
-                    flightInfo.setDepCode(MapUtils.getOrDef(map1, "destCode", ""));
-                    flightInfo.setArrCode(MapUtils.getOrDef(map1, "startCode", ""));
+                    flightInfo.setDepCity(MapUtils.getOrDefLower(map1, "destCity", ""));
+                    flightInfo.setArrCity(MapUtils.getOrDefLower(map1, "startCity", ""));
+                    flightInfo.setDepCode(MapUtils.getOrDefLower(map1, "destCode", ""));
+                    flightInfo.setArrCode(MapUtils.getOrDefLower(map1, "startCode", ""));
                     flightInfo.setDepDate(backDate);
                     fInfos.add(flightInfo);
                 }
+
                 break;
             case FLIGHTDETAIL1:
             case INTERFLIGHTDETAIL:
             case IFLIGHTDETAIL:
             case FLIGHTDETAIL2:
                 flightLogTouch.setIsInter(action.contains("iflight") ? "1" : "0");
-                flightType = TouchLogUtils.flightTypeCls(MapUtils.getOrDef(map1, "flightType", ""));
+                flightType = TouchLogUtils.flightTypeCls(MapUtils.getOrDefLower(map1, "flightType", ""));
+                System.out.println(flightType);
                 flightLogTouch.setFlightType(flightType);
-                flightLogTouch.setUserName(MapUtils.getOrDef(map1, "username", ""));
-                String transCity = MapUtils.getOrDef(map1, "transCity", "");
+                flightLogTouch.setUserName(MapUtils.getOrDefLower(map1, "username", ""));
+                String transCity = MapUtils.getOrDefLower(map1, "transCity", "");
                 if (transCity.equals("")) {
-                    transCity = MapUtils.getOrDef(map1, "transferCity", "");
+                    transCity = MapUtils.getOrDefLower(map1, "transferCity", "");
                 }
-                String[] codeInfos = TouchLogUtils.extractCode(MapUtils.getOrDef(map1, "code", ""));
-                backDate = MapUtils.getOrDef(map1, "backDate", "");
+                String[] codeInfos = TouchLogUtils.extractCode(MapUtils.getOrDefLower(map1, "code", ""));
+                backDate = MapUtils.getOrDefLower(map1, "backDate", "");
+                System.out.println(transCity);
+                System.out.println(backDate);
+                System.out.println(MapUtils.getOrDefLower(map1, "startCity", ""));
+                System.out.println(MapUtils.getOrDefLower(map1, "startcity", ""));
                 if (flightType.equals("roundWay") || (transCity.equals("") && !flightType.equals("oneWay") && !backDate.equals(""))) {
                     flightInfo = new FlightInfo();
-                    flightInfo.setDepCity(MapUtils.getOrDef(map1, "startCity", ""));
-                    flightInfo.setArrCity(MapUtils.getOrDef(map1, "destCity", ""));
-                    flightInfo.setDepCode(MapUtils.getOrDef(map1, "startCode", ""));
-                    flightInfo.setArrCode(MapUtils.getOrDef(map1, "destCode", ""));
-                    flightInfo.setDepDate(MapUtils.getOrDef(map1, "startDate", ""));
+                    flightInfo.setDepCity(MapUtils.getOrDefLower(map1, "startCity", ""));
+                    flightInfo.setArrCity(MapUtils.getOrDefLower(map1, "destCity", ""));
+                    flightInfo.setDepCode(MapUtils.getOrDefLower(map1, "startCode", ""));
+                    flightInfo.setArrCode(MapUtils.getOrDefLower(map1, "destCode", ""));
+                    flightInfo.setDepDate(MapUtils.getOrDefLower(map1, "startDate", ""));
                     flightInfo.setFlightNo(ArrayUtils.getEle(codeInfos, 1));
                     if (codeInfos[0].equals("4") || codeInfos[0].equals("8")) {
                         flightInfo.setDepCode(ArrayUtils.getEle(codeInfos, 2));
@@ -150,10 +155,10 @@ public class FlightLogTouch {
                     fInfos.add(flightInfo);
 
                     flightInfo = new FlightInfo();
-                    flightInfo.setDepCity(MapUtils.getOrDef(map1, "destCity", ""));
-                    flightInfo.setArrCity(MapUtils.getOrDef(map1, "startCity", ""));
-                    flightInfo.setDepCode(MapUtils.getOrDef(map1, "destCode", ""));
-                    flightInfo.setArrCode(MapUtils.getOrDef(map1, "startCode", ""));
+                    flightInfo.setDepCity(MapUtils.getOrDefLower(map1, "destCity", ""));
+                    flightInfo.setArrCity(MapUtils.getOrDefLower(map1, "startCity", ""));
+                    flightInfo.setDepCode(MapUtils.getOrDefLower(map1, "destCode", ""));
+                    flightInfo.setArrCode(MapUtils.getOrDefLower(map1, "startCode", ""));
                     flightInfo.setDepDate(backDate);
                     if (codeInfos[0].equals("8")) {
                         flightInfo.setFlightNo(ArrayUtils.getEle(codeInfos, 5));
@@ -168,9 +173,9 @@ public class FlightLogTouch {
                 // oneWay mixWay
                 else {
                     flightInfo = new FlightInfo();
-                    flightInfo.setDepCity(MapUtils.getOrDef(map1, "startCity", ""));
-                    flightInfo.setDepCode(MapUtils.getOrDef(map1, "startCode", ""));
-                    flightInfo.setDepDate(MapUtils.getOrDef(map1, "startDate", ""));
+                    flightInfo.setDepCity(MapUtils.getOrDefLower(map1, "startCity", ""));
+                    flightInfo.setDepCode(MapUtils.getOrDefLower(map1, "startCode", ""));
+                    flightInfo.setDepDate(MapUtils.getOrDefLower(map1, "startDate", ""));
                     flightInfo.setFlightNo(ArrayUtils.getEle(codeInfos, 1));
                     if (codeInfos[0].equals("4") || codeInfos[0].equals("8")) {
                         flightInfo.setDepCode(ArrayUtils.getEle(codeInfos, 2));
@@ -179,8 +184,8 @@ public class FlightLogTouch {
                     }
 
                     if (transCity.equals("")) {
-                        flightInfo.setArrCode(MapUtils.getOrDef(map1, "destCode", ""));
-                        flightInfo.setArrCity(MapUtils.getOrDef(map1, "destCity", ""));
+                        if(StringUtil.isNENs(flightInfo.getArrCode()))flightInfo.setArrCode(MapUtils.getOrDefLower(map1, "destCode", ""));
+                        flightInfo.setArrCity(MapUtils.getOrDefLower(map1, "destCity", ""));
                         fInfos.add(flightInfo);
                     } else {
                         flightInfo.setArrCity(transCity);
@@ -188,9 +193,9 @@ public class FlightLogTouch {
 
                         flightInfo = new FlightInfo();
                         flightInfo.setDepCity(transCity);
-                        flightInfo.setArrCity(MapUtils.getOrDef(map1, "destCity", ""));
-                        flightInfo.setArrCode(MapUtils.getOrDef(map1, "destCode", ""));
-                        flightInfo.setDepDate(MapUtils.getOrDef(map1, "startDate", ""));
+                        flightInfo.setArrCity(MapUtils.getOrDefLower(map1, "destCity", ""));
+                        flightInfo.setArrCode(MapUtils.getOrDefLower(map1, "destCode", ""));
+                        flightInfo.setDepDate(MapUtils.getOrDefLower(map1, "startDate", ""));
                         if (codeInfos[0].equals("8")) {
                             flightInfo.setFlightNo(ArrayUtils.getEle(codeInfos, 5));
                             flightInfo.setDepCode(ArrayUtils.getEle(codeInfos, 6));
@@ -201,51 +206,49 @@ public class FlightLogTouch {
                         }
                         fInfos.add(flightInfo);
                     }
-
-
                 }
                 break;
             case FLIGHTAV:
                 flightLogTouch.setIsInter("0");
-                flightType = TouchLogUtils.flightTypeCls(MapUtils.getOrDef(map1, "flightType", ""));
+                flightType = TouchLogUtils.flightTypeCls(MapUtils.getOrDefLower(map1, "flightType", ""));
                 flightLogTouch.setFlightType(flightType);
-                flightLogTouch.setUserName(MapUtils.getOrDef(map1, "username", ""));
-                transCity = MapUtils.getOrDef(map1, "transCity", "");
+                flightLogTouch.setUserName(MapUtils.getOrDefLower(map1, "username", ""));
+                transCity = MapUtils.getOrDefLower(map1, "transCity", "");
                 if (transCity.equals("")) {
-                    transCity = MapUtils.getOrDef(map1, "transferCity", "");
+                    transCity = MapUtils.getOrDefLower(map1, "transferCity", "");
                 }
                 if (transCity.equals("")) {
                     flightInfo = new FlightInfo();
-                    flightInfo.setDepCity(MapUtils.getOrDef(map1, "startCity", ""));
-                    flightInfo.setDepCode(MapUtils.getOrDef(map1, "startCityCode", ""));
-                    flightInfo.setDepDate(MapUtils.getOrDef(map1, "startDate", ""));
-                    flightInfo.setDepTime(MapUtils.getOrDef(map1, "startTime", ""));
-                    flightInfo.setArrCity(MapUtils.getOrDef(map1, "destCity", ""));
-                    flightInfo.setArrCode(MapUtils.getOrDef(map1, "destCityCode", ""));
-                    flightInfo.setFlightNo(MapUtils.getOrDef(map1, "airLine", ""));
-                    flightInfo.setCabin(MapUtils.getOrDef(map1, "cabin", ""));
-                    flightInfo.setCompanyCode(MapUtils.getOrDef(map1, "flightCode", ""));
-                    flightInfo.setPlaneType(MapUtils.getOrDef(map1, "planeType", ""));
+                    flightInfo.setDepCity(MapUtils.getOrDefLower(map1, "startCity", ""));
+                    flightInfo.setDepCode(MapUtils.getOrDefLower(map1, "startCityCode", ""));
+                    flightInfo.setDepDate(MapUtils.getOrDefLower(map1, "startDate", ""));
+                    flightInfo.setDepTime(MapUtils.getOrDefLower(map1, "startTime", ""));
+                    flightInfo.setArrCity(MapUtils.getOrDefLower(map1, "destCity", ""));
+                    flightInfo.setArrCode(MapUtils.getOrDefLower(map1, "destCityCode", ""));
+                    flightInfo.setFlightNo(MapUtils.getOrDefLower(map1, "airLine", ""));
+                    flightInfo.setCabin(MapUtils.getOrDefLower(map1, "cabin", ""));
+                    flightInfo.setCompanyCode(MapUtils.getOrDefLower(map1, "flightCode", ""));
+                    flightInfo.setPlaneType(MapUtils.getOrDefLower(map1, "planeType", ""));
                     fInfos.add(flightInfo);
                 } else {
                     flightInfo = new FlightInfo();
-                    flightInfo.setDepCity(MapUtils.getOrDef(map1, "startCity", ""));
-                    flightInfo.setDepCode(MapUtils.getOrDef(map1, "startCityCode", ""));
-                    flightInfo.setDepDate(MapUtils.getOrDef(map1, "startDate", ""));
-                    flightInfo.setDepTime(MapUtils.getOrDef(map1, "startTime", ""));
+                    flightInfo.setDepCity(MapUtils.getOrDefLower(map1, "startCity", ""));
+                    flightInfo.setDepCode(MapUtils.getOrDefLower(map1, "startCityCode", ""));
+                    flightInfo.setDepDate(MapUtils.getOrDefLower(map1, "startDate", ""));
+                    flightInfo.setDepTime(MapUtils.getOrDefLower(map1, "startTime", ""));
                     flightInfo.setArrCity(transCity);
-                    flightInfo.setFlightNo(MapUtils.getOrDef(map1, "airLine", ""));
-                    flightInfo.setCabin(MapUtils.getOrDef(map1, "cabin", ""));
-                    flightInfo.setCompanyCode(MapUtils.getOrDef(map1, "flightCode", ""));
-                    flightInfo.setPlaneType(MapUtils.getOrDef(map1, "planeType", ""));
+                    flightInfo.setFlightNo(MapUtils.getOrDefLower(map1, "airLine", ""));
+                    flightInfo.setCabin(MapUtils.getOrDefLower(map1, "cabin", ""));
+                    flightInfo.setCompanyCode(MapUtils.getOrDefLower(map1, "flightCode", ""));
+                    flightInfo.setPlaneType(MapUtils.getOrDefLower(map1, "planeType", ""));
                     fInfos.add(flightInfo);
 
                     flightInfo = new FlightInfo();
                     flightInfo.setDepCity(transCity);
-                    flightInfo.setDepDate(MapUtils.getOrDef(map1, "backDate", ""));
-                    flightInfo.setArrCity(MapUtils.getOrDef(map1, "destCity", ""));
-                    flightInfo.setArrCode(MapUtils.getOrDef(map1, "destCityCode", ""));
-                    String originCode = MapUtils.getOrDef(map1, "originCode", "");
+                    flightInfo.setDepDate(MapUtils.getOrDefLower(map1, "backDate", ""));
+                    flightInfo.setArrCity(MapUtils.getOrDefLower(map1, "destCity", ""));
+                    flightInfo.setArrCode(MapUtils.getOrDefLower(map1, "destCityCode", ""));
+                    String originCode = MapUtils.getOrDefLower(map1, "originCode", "");
                     flightInfo.setFlightNo(StringUtil.sub(originCode, '/', originCode.length()));
                     fInfos.add(flightInfo);
                 }
@@ -254,57 +257,57 @@ public class FlightLogTouch {
 
             case FLIGHTAVROUND:
                 flightLogTouch.setIsInter("0");
-                flightType = TouchLogUtils.flightTypeCls(MapUtils.getOrDef(map1, "flightType", ""));
+                flightType = TouchLogUtils.flightTypeCls(MapUtils.getOrDefLower(map1, "flightType", ""));
                 flightLogTouch.setFlightType(flightType);
-                flightLogTouch.setUserName(MapUtils.getOrDef(map1, "username", ""));
+                flightLogTouch.setUserName(MapUtils.getOrDefLower(map1, "username", ""));
                 flightInfo = new FlightInfo();
-                flightInfo.setDepCity(MapUtils.getOrDef(map1, "startCity", ""));
-                flightInfo.setArrCity(MapUtils.getOrDef(map1, "destCity", ""));
-                flightInfo.setDepCode(MapUtils.getOrDef(map1, "gdeptAirportCode", ""));
-                flightInfo.setDepDate(MapUtils.getOrDef(map1, "gdeptDate", ""));
-                flightInfo.setDepTime(MapUtils.getOrDef(map1, "gdeptTime", ""));
-                flightInfo.setArrCode(MapUtils.getOrDef(map1, "garriAirportCode", ""));
-                flightInfo.setFlightNo(MapUtils.getOrDef(map1, "gairCode", ""));
-                flightInfo.setCabin(MapUtils.getOrDef(map1, "gcangwei", ""));
-                flightInfo.setCompanyCode(MapUtils.getOrDef(map1, "gairCompanyCode", ""));
-                flightInfo.setPlaneType(MapUtils.getOrDef(map1, "gplanetype", ""));
+                flightInfo.setDepCity(MapUtils.getOrDefLower(map1, "startCity", ""));
+                flightInfo.setArrCity(MapUtils.getOrDefLower(map1, "destCity", ""));
+                flightInfo.setDepCode(MapUtils.getOrDefLower(map1, "gdeptAirportCode", ""));
+                flightInfo.setDepDate(MapUtils.getOrDefLower(map1, "gdeptDate", ""));
+                flightInfo.setDepTime(MapUtils.getOrDefLower(map1, "gdeptTime", ""));
+                flightInfo.setArrCode(MapUtils.getOrDefLower(map1, "garriAirportCode", ""));
+                flightInfo.setFlightNo(MapUtils.getOrDefLower(map1, "gairCode", ""));
+                flightInfo.setCabin(MapUtils.getOrDefLower(map1, "gcangwei", ""));
+                flightInfo.setCompanyCode(MapUtils.getOrDefLower(map1, "gairCompanyCode", ""));
+                flightInfo.setPlaneType(MapUtils.getOrDefLower(map1, "gplanetype", ""));
                 fInfos.add(flightInfo);
 
                 flightInfo = new FlightInfo();
-                flightInfo.setDepCity(MapUtils.getOrDef(map1, "destCity", ""));
-                flightInfo.setArrCity(MapUtils.getOrDef(map1, "startCity", ""));
-                flightInfo.setDepCode(MapUtils.getOrDef(map1, "bdeptAirportCode", ""));
-                flightInfo.setDepDate(MapUtils.getOrDef(map1, "bdeptDate", ""));
-                flightInfo.setDepTime(MapUtils.getOrDef(map1, "bdeptTime", ""));
-                flightInfo.setArrCode(MapUtils.getOrDef(map1, "barriAirportCode", ""));
-                flightInfo.setFlightNo(MapUtils.getOrDef(map1, "bairCode", ""));
-                flightInfo.setCabin(MapUtils.getOrDef(map1, "bcangwei", ""));
-                flightInfo.setCompanyCode(MapUtils.getOrDef(map1, "bairCompanyCode", ""));
-                flightInfo.setPlaneType(MapUtils.getOrDef(map1, "bplanetype", ""));
+                flightInfo.setDepCity(MapUtils.getOrDefLower(map1, "destCity", ""));
+                flightInfo.setArrCity(MapUtils.getOrDefLower(map1, "startCity", ""));
+                flightInfo.setDepCode(MapUtils.getOrDefLower(map1, "bdeptAirportCode", ""));
+                flightInfo.setDepDate(MapUtils.getOrDefLower(map1, "bdeptDate", ""));
+                flightInfo.setDepTime(MapUtils.getOrDefLower(map1, "bdeptTime", ""));
+                flightInfo.setArrCode(MapUtils.getOrDefLower(map1, "barriAirportCode", ""));
+                flightInfo.setFlightNo(MapUtils.getOrDefLower(map1, "bairCode", ""));
+                flightInfo.setCabin(MapUtils.getOrDefLower(map1, "bcangwei", ""));
+                flightInfo.setCompanyCode(MapUtils.getOrDefLower(map1, "bairCompanyCode", ""));
+                flightInfo.setPlaneType(MapUtils.getOrDefLower(map1, "bplanetype", ""));
                 fInfos.add(flightInfo);
                 break;
 
             case IFLIGHTAV:
                 flightLogTouch.setIsInter("1");
-                flightType = TouchLogUtils.flightTypeCls(MapUtils.getOrDef(map1, "flightType", ""));
+                flightType = TouchLogUtils.flightTypeCls(MapUtils.getOrDefLower(map1, "flightType", ""));
                 flightLogTouch.setFlightType(flightType);
-                flightLogTouch.setUserName(MapUtils.getOrDef(map1, "username", ""));
+                flightLogTouch.setUserName(MapUtils.getOrDefLower(map1, "username", ""));
                 int count = 0;
-                String[] cabinArr = MapUtils.getOrDef(map1, "cabin", "").split("~|/");
+                String[] cabinArr = MapUtils.getOrDefLower(map1, "cabin", "").split("~|/");
                 for (String dire : new String[]{"g", "b"}) {
                     for (int i = 1; i <= 2; i++) {
-                        String gdac = MapUtils.getOrDef(map1, "gdac" + i, "");
+                        String gdac = MapUtils.getOrDefLower(map1, "gdac" + i, "");
                         if (!gdac.equals("")) {
                             flightInfo = new FlightInfo();
-                            flightInfo.setDepCode(MapUtils.getOrDef(map1, dire + "dac" + i, ""));
-                            flightInfo.setArrCode(MapUtils.getOrDef(map1, dire + "aac" + i, ""));
-                            flightInfo.setDepDate(MapUtils.getOrDef(map1, dire + "dd" + i, ""));
-                            flightInfo.setDepTime(MapUtils.getOrDef(map1, dire + "dt" + i, ""));
-                            flightInfo.setArrDate(MapUtils.getOrDef(map1, dire + "ad" + i, ""));
-                            flightInfo.setArrTime(MapUtils.getOrDef(map1, dire + "at" + i, ""));
-                            flightInfo.setFlightNo(MapUtils.getOrDef(map1, dire + "ac" + i, ""));
+                            flightInfo.setDepCode(MapUtils.getOrDefLower(map1, dire + "dac" + i, ""));
+                            flightInfo.setArrCode(MapUtils.getOrDefLower(map1, dire + "aac" + i, ""));
+                            flightInfo.setDepDate(MapUtils.getOrDefLower(map1, dire + "dd" + i, ""));
+                            flightInfo.setDepTime(MapUtils.getOrDefLower(map1, dire + "dt" + i, ""));
+                            flightInfo.setArrDate(MapUtils.getOrDefLower(map1, dire + "ad" + i, ""));
+                            flightInfo.setArrTime(MapUtils.getOrDefLower(map1, dire + "at" + i, ""));
+                            flightInfo.setFlightNo(MapUtils.getOrDefLower(map1, dire + "ac" + i, ""));
                             flightInfo.setCabin(ArrayUtils.getEle(cabinArr, count));
-                            flightInfo.setPlaneType(MapUtils.getOrDef(map1, dire + "pt" + i, ""));
+                            flightInfo.setPlaneType(MapUtils.getOrDefLower(map1, dire + "pt" + i, ""));
                             fInfos.add(flightInfo);
                             count += 1;
                         }
@@ -313,16 +316,17 @@ public class FlightLogTouch {
                 break;
 
             case ONEWAY3W:
-                flightType = MapUtils.getOrDef(map1, "searchType", "");
+//                flightType = MapUtils.getOrDefLower(map1, "searchType", "");
+                flightType = "oneWay";
                 flightLogTouch.setFlightType(flightType);
-                flightLogTouch.setIsInter(MapUtils.getOrDef(map1, "isInterFlight", ""));
-                flightLogTouch.setUserName(MapUtils.getOrDef(map1, "username", ""));
+                flightLogTouch.setIsInter(MapUtils.getOrDefLower(map1, "isInterFlight", ""));
+                flightLogTouch.setUserName(MapUtils.getOrDefLower(map1, "username", ""));
                 flightInfo = new FlightInfo();
-                flightInfo.setDepCity(MapUtils.getOrDef(map1, "searchDepartureAirport", ""));
-                flightInfo.setArrCity(MapUtils.getOrDef(map1, "searchArrivalAirport", ""));
-                flightInfo.setDepCode(MapUtils.getOrDef(map1, "fromCode", ""));
-                flightInfo.setArrCode(MapUtils.getOrDef(map1, "toCode", ""));
-                flightInfo.setDepDate(MapUtils.getOrDef(map1, "searchDepartureTime", ""));
+                flightInfo.setDepCity(MapUtils.getOrDefLower(map1, "searchDepartureAirport", ""));
+                flightInfo.setArrCity(MapUtils.getOrDefLower(map1, "searchArrivalAirport", ""));
+                flightInfo.setDepCode(MapUtils.getOrDefLower(map1, "fromCode", ""));
+                flightInfo.setArrCode(MapUtils.getOrDefLower(map1, "toCode", ""));
+                flightInfo.setDepDate(MapUtils.getOrDefLower(map1, "searchDepartureTime", ""));
                 fInfos.add(flightInfo);
                 break;
 
@@ -330,21 +334,21 @@ public class FlightLogTouch {
             case ROUNDWAY3W:
                 flightType = "roundWay";
                 flightLogTouch.setFlightType(flightType);
-                flightLogTouch.setIsInter(MapUtils.getOrDef(map1, "isInterFlight", ""));
-                flightLogTouch.setUserName(MapUtils.getOrDef(map1, "username", ""));
+                flightLogTouch.setIsInter(MapUtils.getOrDefLower(map1, "isInterFlight", ""));
+                flightLogTouch.setUserName(MapUtils.getOrDefLower(map1, "username", ""));
                 flightInfo = new FlightInfo();
-                flightInfo.setDepCity(MapUtils.getOrDef(map1, "fromCity", ""));
-                flightInfo.setArrCity(MapUtils.getOrDef(map1, "toCity", ""));
-                flightInfo.setDepCode(MapUtils.getOrDef(map1, "fromCode", ""));
-                flightInfo.setArrCode(MapUtils.getOrDef(map1, "toCode", ""));
-                flightInfo.setDepDate(MapUtils.getOrDef(map1, "fromDate", ""));
+                flightInfo.setDepCity(MapUtils.getOrDefLower(map1, "fromCity", ""));
+                flightInfo.setArrCity(MapUtils.getOrDefLower(map1, "toCity", ""));
+                flightInfo.setDepCode(MapUtils.getOrDefLower(map1, "fromCode", ""));
+                flightInfo.setArrCode(MapUtils.getOrDefLower(map1, "toCode", ""));
+                flightInfo.setDepDate(MapUtils.getOrDefLower(map1, "fromDate", ""));
                 fInfos.add(flightInfo);
                 flightInfo = new FlightInfo();
-                flightInfo.setDepCity(MapUtils.getOrDef(map1, "toCity", ""));
-                flightInfo.setArrCity(MapUtils.getOrDef(map1, "fromCity", ""));
-                flightInfo.setDepCode(MapUtils.getOrDef(map1, "toCode", ""));
-                flightInfo.setArrCode(MapUtils.getOrDef(map1, "fromCode", ""));
-                flightInfo.setDepDate(MapUtils.getOrDef(map1, "toDate", ""));
+                flightInfo.setDepCity(MapUtils.getOrDefLower(map1, "toCity", ""));
+                flightInfo.setArrCity(MapUtils.getOrDefLower(map1, "fromCity", ""));
+                flightInfo.setDepCode(MapUtils.getOrDefLower(map1, "toCode", ""));
+                flightInfo.setArrCode(MapUtils.getOrDefLower(map1, "fromCode", ""));
+                flightInfo.setDepDate(MapUtils.getOrDefLower(map1, "toDate", ""));
                 fInfos.add(flightInfo);
                 break;
             default:

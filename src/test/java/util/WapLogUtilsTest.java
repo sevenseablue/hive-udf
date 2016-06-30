@@ -14,7 +14,7 @@ public class WapLogUtilsTest extends TestCase {
                 "a=b",
                 "finfo={shortName=九元&companyCode=AQ1026&planeType=null&depDate=2016-06-14&depTime=23:40&depAirport=美兰机场&depAirportCode=null&arrTime=01:00&arrAirport=白云机场&arrAirportCode=null}"
         }) {
-            System.out.println(WapLogUtils.splitToMap(log).get("finfo"));
+            System.out.println(MapUtils.getOrDefLower(WapLogUtils.splitToMap(log), "finfo", ""));
         }
     }
 

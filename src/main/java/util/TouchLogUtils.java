@@ -74,9 +74,8 @@ public class TouchLogUtils {
             result[0] = "2";
             Matcher m = Patt2.matcher(code);
             if (m.find()) {
-                for (int i = 1; i <= 2; i++) {
-                    result[i] = m.group(i);
-                }
+                result[1] = m.group(1);
+                result[2] = m.group(3);
             }
         } else {
             result = new String[2];

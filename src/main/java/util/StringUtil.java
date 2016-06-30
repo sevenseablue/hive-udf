@@ -105,6 +105,14 @@ public class StringUtil {
         System.out.println(s.split(splitter).length);
     }
 
+    public static boolean isNENs(String str) {
+        if (str == null || str.equals("") || str.toLowerCase().equals("null")) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     public static void main(String[] args) {
 
     }

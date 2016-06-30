@@ -27,4 +27,8 @@ public class StringUtilTest extends TestCase {
 
     }
 
+    public void testSubString(){
+        System.out.println("abc?".substring("abc?".indexOf("?")+1));
+    }
+
 }
