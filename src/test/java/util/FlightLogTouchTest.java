@@ -2,10 +2,7 @@ package util;
 
 import junit.framework.TestCase;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.Collections;
 import java.util.List;
 
@@ -17,6 +14,7 @@ public class FlightLogTouchTest extends TestCase {
         BufferedReader br;
         try {
             br = new BufferedReader(new InputStreamReader(FlightLogTouchTest.class.getClassLoader().getResourceAsStream("etl_touch_sample.txt")));
+
             String line = "";
             int lineNum = 1;
             while ((line = br.readLine()) != null) {
@@ -63,6 +61,9 @@ public class FlightLogTouchTest extends TestCase {
         BufferedReader br;
         try {
             br = new BufferedReader(new InputStreamReader(FlightLogTouchTest.class.getClassLoader().getResourceAsStream("etl_touch_sample.txt.3")));
+            BufferedReader brHive = new BufferedReader(new InputStreamReader(FlightLogTouchTest.class.getClassLoader().getResourceAsStream("etl_touch_sample.txt.3.check.hive")));
+            BufferedReader brStr = new BufferedReader(new InputStreamReader(FlightLogTouchTest.class.getClassLoader().getResourceAsStream("etl_touch_sample.txt.3.check.String")));
+//            BufferedWriter bw = new BufferedWriter(new FileWriter("/work/java-projects/hive-udf/src/main/resources/etl_touch_sample.txt.3.check.String"));
             String line = "";
             int lineNum = 1;
             while ((line = br.readLine()) != null) {
@@ -75,6 +76,9 @@ public class FlightLogTouchTest extends TestCase {
                 System.out.println(action);
                 System.out.println(TouchLogUtils.getPage(action));
                 System.out.println(FlightLogTouch.getLogs(action, url, post).toString());
+                assertEquals(FlightLogTouch.getLogs(action, url, post).toHive(), brHive.readLine());
+                assertEquals(FlightLogTouch.getLogs(action, url, post).toString(), brStr.readLine());
+//                bw.write(FlightLogTouch.getLogs(action, url, post).toString()+"\n");
 
                 String log;
                 if (url.contains("?")) {
@@ -92,6 +96,7 @@ public class FlightLogTouchTest extends TestCase {
                 lineNum += 1;
             }
             br.close();
+//            bw.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {

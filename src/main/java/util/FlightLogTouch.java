@@ -126,7 +126,6 @@ public class FlightLogTouch {
             case FLIGHTDETAIL2:
                 flightLogTouch.setIsInter(action.contains("iflight") ? "1" : "0");
                 flightType = TouchLogUtils.flightTypeCls(MapUtils.getOrDefLower(map1, "flightType", ""));
-                System.out.println(flightType);
                 flightLogTouch.setFlightType(flightType);
                 flightLogTouch.setUserName(MapUtils.getOrDefLower(map1, "username", ""));
                 String transCity = MapUtils.getOrDefLower(map1, "transCity", "");
@@ -135,10 +134,6 @@ public class FlightLogTouch {
                 }
                 String[] codeInfos = TouchLogUtils.extractCode(MapUtils.getOrDefLower(map1, "code", ""));
                 backDate = MapUtils.getOrDefLower(map1, "backDate", "");
-                System.out.println(transCity);
-                System.out.println(backDate);
-                System.out.println(MapUtils.getOrDefLower(map1, "startCity", ""));
-                System.out.println(MapUtils.getOrDefLower(map1, "startcity", ""));
                 if (flightType.equals("roundWay") || (transCity.equals("") && !flightType.equals("oneWay") && !backDate.equals(""))) {
                     flightInfo = new FlightInfo();
                     flightInfo.setDepCity(MapUtils.getOrDefLower(map1, "startCity", ""));

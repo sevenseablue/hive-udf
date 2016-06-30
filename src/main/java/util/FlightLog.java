@@ -416,8 +416,8 @@ public class FlightLog {
                 fInfos.add(flightInfo);
 
                 flightInfo = new FlightInfo();
-                flightInfo.setDepCity(MapUtils.getOrDefLower(map1, "end", ""));
-                flightInfo.setArrCity(MapUtils.getOrDefLower(map1, "begin", ""));
+                flightInfo.setDepCity(MapUtils.getOrDefLower(map1, "arrCity", ""));
+                flightInfo.setArrCity(MapUtils.getOrDefLower(map1, "depCity", ""));
                 String bfinfo = StringUtil.sub(MapUtils.getOrDefLower(map1, "bfinfo", ""), '{', '}');
                 if (bfinfo != null && bfinfo.length() > 10) {
                     Map<String, String> map_tmp = WapLogUtils.splitToMap(bfinfo);
@@ -574,49 +574,120 @@ public class FlightLog {
                 break;
 
             case INTERFMWDETAIL:
-            case INTERMIXFRWDETAIL:
                 airCodeCol = MapUtils.getOrDefLower(map1, "airCode", "");
-                if (airCodeCol.contains(";")) {
-                    String[] fInfos_loop = airCodeCol.split(";");
-                    int count_tmp = 0;
-                    for (String str_tmp : fInfos_loop) {
-                        if (count_tmp >= 2) {
-                            break;
-                        }
-                        String[] fInfos_tmp = str_tmp.split("\\|", 3);
+                airCodeColArr = WapLogUtils.extractAirCode(Action.INTERFMWDETAIL, airCodeCol);
+                if(airCodeColArr[0].equals("8")){
+                    for(int i=0; i<2; i++) {
                         flightInfo = new FlightInfo();
-                        if (count_tmp == 0) {
+                        if (i == 0) {
                             flightInfo.setDepCity(MapUtils.getOrDefLower(map1, "depCity", ""));
                             flightInfo.setArrCity(MapUtils.getOrDefLower(map1, "transCity", ""));
                         } else {
                             flightInfo.setDepCity(MapUtils.getOrDefLower(map1, "transCity", ""));
                             flightInfo.setArrCity(MapUtils.getOrDefLower(map1, "arrCity", ""));
                         }
-                        if (fInfos_tmp.length >= 3) {
-                            flightInfo.setFlightNo(fInfos_tmp[0]);
-                            flightInfo.setDepDate(fInfos_tmp[2]);
-                            String[] codes_loop = fInfos_tmp[1].split("-", 2);
-                            if (codes_loop.length >= 2) {
-                                flightInfo.setDepCode(codes_loop[0]);
-                                flightInfo.setArrCode(codes_loop[1]);
-                            } else {
-                                flightInfo.setDepCode(fInfos_tmp[1]);
-                            }
-                            fInfos.add(flightInfo);
-                        } else {
-                            flightInfo.setFlightNo(fInfos_tmp[0]);
-                            fInfos.add(flightInfo);
-                        }
-
-                        count_tmp += 1;
+                        flightInfo.setFlightNo(airCodeColArr[1+i*4]);
+                        flightInfo.setDepCode(airCodeColArr[2+i*4]);
+                        flightInfo.setArrCode(airCodeColArr[3+i*4]);
+                        flightInfo.setDepDate(airCodeColArr[4+i*4]);
+                        fInfos.add(flightInfo);
                     }
-                } else {
+                }else{
                     flightInfo = new FlightInfo();
                     flightInfo.setDepCity(MapUtils.getOrDefLower(map1, "depCity", ""));
                     flightInfo.setArrCity(MapUtils.getOrDefLower(map1, "arrCity", ""));
-                    flightInfo.setFlightNo(MapUtils.getOrDefLower(map1, "airCode", ""));
+                    flightInfo.setDepCode(MapUtils.getOrDefLower(map1, "goDate", ""));
+                    flightInfo.setFlightNo(airCodeColArr[1]);
                     fInfos.add(flightInfo);
                 }
+
+            case INTERMIXFRWDETAIL:
+                airCodeCol = MapUtils.getOrDefLower(map1, "airCode", "");
+                airCodeColArr = WapLogUtils.extractAirCode(Action.INTERMIXFRWDETAIL, airCodeCol);
+                if(airCodeColArr[0].equals("16")){
+                    for(int i=0; i<4; i++) {
+                        flightInfo = new FlightInfo();
+                        switch (i){
+                            case 0:
+                                flightInfo.setDepCity(MapUtils.getOrDefLower(map1, "depCity", ""));
+                                flightInfo.setArrCity(MapUtils.getOrDefLower(map1, "transCity", ""));
+                                break;
+                            case 1:
+                                flightInfo.setDepCity(MapUtils.getOrDefLower(map1, "transCity", ""));
+                                flightInfo.setArrCity(MapUtils.getOrDefLower(map1, "arrCity", ""));
+                                break;
+                            case 2:
+                                flightInfo.setDepCity(MapUtils.getOrDefLower(map1, "arrCity", ""));
+                                flightInfo.setArrCity(MapUtils.getOrDefLower(map1, "transCity", ""));
+                                break;
+                            case 3:
+                                flightInfo.setDepCity(MapUtils.getOrDefLower(map1, "transCity", ""));
+                                flightInfo.setArrCity(MapUtils.getOrDefLower(map1, "depCity", ""));
+                                break;
+                        }
+                        flightInfo.setFlightNo(airCodeColArr[1+i*4]);
+                        flightInfo.setDepCode(airCodeColArr[2+i*4]);
+                        flightInfo.setArrCode(airCodeColArr[3+i*4]);
+                        flightInfo.setDepDate(airCodeColArr[4+i*4]);
+                        fInfos.add(flightInfo);
+                    }
+                }else{
+                    flightInfo = new FlightInfo();
+                    flightInfo.setDepCity(MapUtils.getOrDefLower(map1, "depCity", ""));
+                    flightInfo.setArrCity(MapUtils.getOrDefLower(map1, "arrCity", ""));
+                    flightInfo.setDepCode(MapUtils.getOrDefLower(map1, "goDate", ""));
+                    flightInfo.setFlightNo(airCodeColArr[1]);
+                    fInfos.add(flightInfo);
+                    flightInfo = new FlightInfo();
+                    flightInfo.setDepCity(MapUtils.getOrDefLower(map1, "arrCity", ""));
+                    flightInfo.setArrCity(MapUtils.getOrDefLower(map1, "depCity", ""));
+                    flightInfo.setDepCode(MapUtils.getOrDefLower(map1, "backDate", ""));
+                    flightInfo.setFlightNo(airCodeColArr[1]);
+                    fInfos.add(flightInfo);
+                }
+
+//                airCodeCol = MapUtils.getOrDefLower(map1, "airCode", "");
+//                if (airCodeCol.contains(";")) {
+//                    String[] airCodeColLoop = airCodeCol.split(";");
+//                    int count_tmp = 0;
+//                    for (String str_tmp : airCodeColLoop) {
+//                        if (count_tmp >= 2) {
+//                            break;
+//                        }
+//                        String[] fInfos_tmp = str_tmp.split("\\|", 4);
+//                        flightInfo = new FlightInfo();
+//                        if (count_tmp == 0) {
+//                            flightInfo.setDepCity(MapUtils.getOrDefLower(map1, "depCity", ""));
+//                            flightInfo.setArrCity(MapUtils.getOrDefLower(map1, "transCity", ""));
+//                        } else {
+//                            flightInfo.setDepCity(MapUtils.getOrDefLower(map1, "transCity", ""));
+//                            flightInfo.setArrCity(MapUtils.getOrDefLower(map1, "arrCity", ""));
+//                        }
+//                        if (fInfos_tmp.length >= 3) {
+//                            flightInfo.setFlightNo(fInfos_tmp[0]);
+//                            flightInfo.setDepDate(fInfos_tmp[fInfos_tmp.length==3?2:(+2+count_tmp)]);
+//                            String[] codes_loop = fInfos_tmp[1].split("-", 2);
+//                            if (codes_loop.length >= 2) {
+//                                flightInfo.setDepCode(codes_loop[0]);
+//                                flightInfo.setArrCode(codes_loop[1]);
+//                            } else {
+//                                flightInfo.setDepCode(fInfos_tmp[1]);
+//                            }
+//                            fInfos.add(flightInfo);
+//                        } else {
+//                            flightInfo.setFlightNo(fInfos_tmp[0]);
+//                            fInfos.add(flightInfo);
+//                        }
+//
+//                        count_tmp += 1;
+//                    }
+//                } else {
+//                    flightInfo = new FlightInfo();
+//                    flightInfo.setDepCity(MapUtils.getOrDefLower(map1, "depCity", ""));
+//                    flightInfo.setArrCity(MapUtils.getOrDefLower(map1, "arrCity", ""));
+//                    flightInfo.setFlightNo(MapUtils.getOrDefLower(map1, "airCode", ""));
+//                    fInfos.add(flightInfo);
+//                }
 
                 break;
 

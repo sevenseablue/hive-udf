@@ -2,10 +2,18 @@ package util;
 
 import junit.framework.TestCase;
 
+import java.util.Arrays;
+
 /**
  * Created by seven on 22/06/16.
  */
 public class WapLogUtilsTest extends TestCase {
+    public void testExtractAirCode() throws Exception {
+        System.out.println(ArrayUtils.joinEle(WapLogUtils.extractAirCode(Action.INTERMIXFRWDETAIL,"HX174_HX147|FOC-HKG|2016-07-01|2016-07-07;UO763_UO764|HKG-HKT|2016-07-02|2016-07-07"), "\t"));
+        assertEquals(ArrayUtils.joinEle(WapLogUtils.extractAirCode(Action.INTERFMWDETAIL, "MU735|SHA-SYD|2016-07-01;JQ725|SYD-HBA|2016-07-01"), "|"), "8|MU735|SHA|SYD|2016-07-01|JQ725|SYD|HBA|2016-07-01");
+        assertEquals(ArrayUtils.joinEle(WapLogUtils.extractAirCode(Action.INTERMIXFRWDETAIL, "TZ321_TZ322|HKG-SIN|2016-09-30|2016-10-07;QZ509_QZ504|SIN-DPS|2016-09-30|2016-10-06"), "|"), "16|TZ321|HKG|SIN|2016-09-30|QZ509|SIN|DPS|2016-09-30|QZ504|DPS|SIN|2016-10-06|TZ322|SIN|HKG|2016-10-07");
+
+    }
 
 
     public void testSplitToMap() throws Exception {

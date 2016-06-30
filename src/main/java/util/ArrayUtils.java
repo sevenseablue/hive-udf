@@ -11,4 +11,17 @@ public class ArrayUtils {
             return null;
         }
     }
+
+
+    public static <T> String joinEle(T[] tArr, String index) {
+        if(tArr==null || tArr.length==0){
+            return "";
+        }
+        StringBuffer sb = new StringBuffer();
+        sb.append(tArr[0]);
+        for(int i=1; i<tArr.length; i++){
+            sb.append(index).append(tArr[i]);
+        }
+        return sb.toString();
+    }
 }

@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static util.StringUtil.isNENs;
 
@@ -352,14 +354,68 @@ public class WapLogUtils {
             if (isNENs(flightInfo.companyCode) && !isNENs(flightInfo.flightNo)) {
                 flightInfo.companyCode = StringUtil.sub(flightInfo.flightNo, 0, 2);
             }
-            System.out.println(isNENs(flightInfo.cabinDesc));
-            System.out.println(!isNENs(flightInfo.cabin));
-            System.out.println((isNENs(flightInfo.cabinDesc) && !isNENs(flightInfo.cabin) && !isNENs(flightInfo.companyCode)));
             if (isNENs(flightInfo.cabinDesc) && !isNENs(flightInfo.cabin) && !isNENs(flightInfo.companyCode)) {
-                System.out.println(CabinLevel.get(flightInfo.companyCode, flightInfo.cabin));
                 flightInfo.cabinDesc = CabinLevel.get(flightInfo.companyCode, flightInfo.cabin);
             }
         }
+    }
+
+    // "MU735|SHA-SYD|2016-07-01;JQ725|SYD-HBA|2016-07-01"
+    public static final Pattern patternFmwDetail = Pattern.compile("([A-Z0-9]{4,6})\\|([A-Z0-9]{3})-([A-Z0-9]{3})\\|(\\d{4}-\\d{2}-\\d{2});([A-Z0-9]{4,6})\\|([A-Z0-9]{3})-([A-Z0-9]{3})\\|(\\d{4}-\\d{2}-\\d{2})");
+    // "TZ321_TZ322|HKG-SIN|2016-09-30|2016-10-07;QZ509_QZ504|SIN-DPS|2016-09-30|2016-10-06"
+    public static final Pattern patternmixFrwDetail = Pattern.compile("([A-Z0-9]{4,6})_([A-Z0-9]{4,6})\\|([A-Z0-9]{3})-([A-Z0-9]{3})\\|(\\d{4}-\\d{2}-\\d{2})\\|(\\d{4}-\\d{2}-\\d{2});([A-Z0-9]{4,6})_([A-Z0-9]{4,6})\\|([A-Z0-9]{3})-([A-Z0-9]{3})\\|(\\d{4}-\\d{2}-\\d{2})\\|(\\d{4}-\\d{2}-\\d{2})");
+
+    public static String[] extractAirCode(Action action, String airCode){
+        String[] result ;
+        if(action==Action.INTERFMWDETAIL){
+            Matcher m = patternFmwDetail.matcher(airCode);
+            if(m.find()){
+                result = new String[9];
+                result[0] = "8";
+                for(int i=1; i<=8; i++){
+                    result[i] = m.group(i);
+                }
+            }
+            else{
+                result = new String[2];
+                result[0] = "1";
+                result[1] = airCode;
+            }
+        }
+        else if(action == Action.INTERMIXFRWDETAIL){
+            Matcher m = patternmixFrwDetail.matcher(airCode);
+            if(m.find()){
+                result = new String[17];
+                result[0] = "16";
+                result[1] = m.group(1);
+                result[2] = m.group(3);
+                result[3] = m.group(4);
+                result[4] = m.group(5);
+                result[5] = m.group(7);
+                result[6] = m.group(9);
+                result[7] = m.group(10);
+                result[8] = m.group(11);
+                result[9] = m.group(8);
+                result[10] = m.group(10);
+                result[11] = m.group(9);
+                result[12] = m.group(12);
+                result[13] = m.group(2);
+                result[14] = m.group(4);
+                result[15] = m.group(3);
+                result[16] = m.group(6);
+            }
+            else{
+                result = new String[2];
+                result[0] = "1";
+                result[1] = airCode;
+            }
+        }
+        else{
+            result = new String[2];
+            result[0] = "1";
+            result[1] = airCode;
+        }
+        return result;
     }
 
     public static void main(String[] args) {

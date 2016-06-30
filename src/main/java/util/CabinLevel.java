@@ -14,7 +14,6 @@ public class CabinLevel {
             res = "经济舱";
         } else {
             String key = airComp.trim().replace("\"", "") + "," + cabin.trim();
-            System.out.println(key);
             res = MapUtils.getOrDef(cabinMap, key, "");
         }
 
@@ -33,10 +32,6 @@ public class CabinLevel {
                     continue;
                 }
                 String[] spli = tmpStr.split(",");
-                if(spli[0].equals("MF")){
-                    System.out.println(tmpStr.substring(0, i1));
-                    System.out.println(tmpStr.substring(i1 + 1));
-                }
                 cabinMap.put(tmpStr.substring(0, i1), tmpStr.substring(i1 + 1));
             }
             br.close();
