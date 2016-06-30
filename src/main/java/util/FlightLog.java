@@ -125,6 +125,7 @@ public class FlightLog {
     }
 
     public static FlightLog getLogs(String action, String log) {
+        log = log.replaceAll("&amp;", "&");
         Action action1 = ActionCls.getAction(action);
         Map<String, String> map1 = WapLogUtils.splitToMap(log);
         FlightLog flightLog = new FlightLog();

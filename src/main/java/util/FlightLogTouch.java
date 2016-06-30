@@ -82,6 +82,7 @@ public class FlightLogTouch {
 
     public static FlightLogTouch getLogs(String action, String url, String post) {
         String log = (url.contains("?") ? url.substring(url.indexOf("?")+1)+"&" : "") + post;
+        log = log.replaceAll("&amp;", "&");
         ActionTouch action1 = ActionClsTouch.getAction(action);
         Map<String, String> map1 = WapLogUtils.splitToMap(log);
         FlightLogTouch flightLogTouch = new FlightLogTouch();
@@ -291,8 +292,8 @@ public class FlightLogTouch {
                 String[] cabinArr = MapUtils.getOrDefLower(map1, "cabin", "").split("~|/");
                 for (String dire : new String[]{"g", "b"}) {
                     for (int i = 1; i <= 2; i++) {
-                        String gdac = MapUtils.getOrDefLower(map1, "gdac" + i, "");
-                        if (!gdac.equals("")) {
+                        String dac = MapUtils.getOrDefLower(map1, dire+"dac" + i, "");
+                        if (!dac.equals("")) {
                             flightInfo = new FlightInfo();
                             flightInfo.setDepCode(MapUtils.getOrDefLower(map1, dire + "dac" + i, ""));
                             flightInfo.setArrCode(MapUtils.getOrDefLower(map1, dire + "aac" + i, ""));
