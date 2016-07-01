@@ -80,8 +80,8 @@ public class FlightLogTouch {
         return sb.toString();
     }
 
-    public static FlightLogTouch getLogs(String action, String url, String post) {
-        String log = (url.contains("?") ? url.substring(url.indexOf("?")+1)+"&" : "") + post;
+    public static FlightLogTouch getLogs(String action, String log) {
+//        String log = (url.contains("?") ? url.substring(url.indexOf("?")+1)+"&" : "") + post;
         log = log.replaceAll("&amp;", "&");
         ActionTouch action1 = ActionClsTouch.getAction(action);
         Map<String, String> map1 = WapLogUtils.splitToMap(log);
@@ -355,4 +355,11 @@ public class FlightLogTouch {
 
         return flightLogTouch;
     }
+
+
+    public static FlightLogTouch getLogs(String action, String url, String post) {
+        String log = (url.contains("?") ? url.substring(url.indexOf("?")+1)+"&" : "") + post;
+        return getLogs(action, log);
+    }
+
 }

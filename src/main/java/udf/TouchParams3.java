@@ -7,7 +7,7 @@ import util.FlightLogTouch;
 /**
  * Created by seven on 24/06/16.
  */
-public class TouchParams extends UDF {
+public class TouchParams3 extends UDF {
     public String evaluate(String action, String url, String post) {
         return FlightLogTouch.getLogs(action, url, post).toHive();
     }
