@@ -114,6 +114,8 @@ public class StringUtil {
     }
 
     public static void main(String[] args) {
-
+        for (String flightKey : new String[] {"UA7610|PEK-NYC|2016-08-28;UA4000|NYC-BUF|2016-08-28","MF8015|XMN-HKG|2016-07-28"}) {
+            System.out.println(StringUtil.sub(flightKey, 0, '|', false) + "/" + StringUtil.sub(flightKey, ';', '|', false));
+        }
     }
 }

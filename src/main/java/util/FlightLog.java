@@ -190,9 +190,17 @@ public class FlightLog {
                     String flightKey = MapUtils.getOrDefLower(map1, "flightKey", "");
                     if (flightKey.contains("_")) {
                         flightInfo.setFlightNo(StringUtil.sub(flightKey, 0, '_', false));
-                    } else {
+                    } else if(flightKey.contains("|")){
+                        if(!flightKey.contains(";")) {
+                            flightInfo.setFlightNo(StringUtil.sub(flightKey, 0, '|', false));
+                        }
+                        else{
+                            flightInfo.setFlightNo(StringUtil.sub(flightKey, 0, '|', false)+"/"+StringUtil.sub(flightKey, ';', '|', false));
+                        }
+                    } else{
                         flightInfo.setFlightNo(flightKey);
                     }
+
                     fInfos.add(flightInfo);
                     String backDate = MapUtils.getOrDefLower(map1, "backDate", "");
                     if (backDate != null && !backDate.equals("")) {
