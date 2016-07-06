@@ -188,16 +188,23 @@ public class FlightLog {
                     flightInfo.setArrCity(MapUtils.getOrDefLower(map1, "end", ""));
                     flightInfo.setDepDate(MapUtils.getOrDefLower(map1, "goDate", ""));
                     String flightKey = MapUtils.getOrDefLower(map1, "flightKey", "");
-                    if (flightKey.contains("_")) {
-                        flightInfo.setFlightNo(StringUtil.sub(flightKey, 0, '_', false));
-                    } else if(flightKey.contains("|")){
-                        if(!flightKey.contains(";")) {
-                            flightInfo.setFlightNo(StringUtil.sub(flightKey, 0, '|', false));
+                    if (flightKey.contains("|")){
+                        if(flightKey.contains(";")) {
+                            flightInfo.setFlightNo(StringUtil.sub(flightKey, 0, '|', false)+","+StringUtil.sub(flightKey, ';', '|', false));
+
+                        }
+                        else if(flightKey.contains("_")) {
+                            flightInfo.setFlightNo(StringUtil.sub(flightKey, 0, '|', false)+","+StringUtil.sub(flightKey, '_', '|', false));
+
                         }
                         else{
-                            flightInfo.setFlightNo(StringUtil.sub(flightKey, 0, '|', false)+"/"+StringUtil.sub(flightKey, ';', '|', false));
+                            flightInfo.setFlightNo(StringUtil.sub(flightKey, 0, '|', false));
                         }
-                    } else{
+                    }
+                    else if (flightKey.contains("_")) {
+                        flightInfo.setFlightNo(StringUtil.sub(flightKey, 0, '_', false));
+                    }
+                    else{
                         flightInfo.setFlightNo(flightKey);
                     }
 
